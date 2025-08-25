@@ -1,25 +1,25 @@
 {
-  "name": "due-or-die",
-  "version": "1.0.0",
-  "description": "Este repositório contém a solução para o desafio técnico proposto pela **Sootz (itnsify)**.  \r O objetivo é desenvolver uma aplicação **To-Do List** com autenticação de usuários e gerenciamento de tarefas, utilizando **Firebase** no backend e **Next.js** no frontend.",
-  "homepage": "https://github.com/Talyslan/due-or-die#readme",
-  "bugs": {
-    "url": "https://github.com/Talyslan/due-or-die/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Talyslan/due-or-die.git"
-  },
-  "license": "MIT",
-  "author": "Talyslan",
-  "type": "commonjs",
-  "scripts": {
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && npm run dev",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "install:all": "npm install --workspaces || pnpm install"
-  },
-  "devDependencies": {
-    "concurrently": "^9.0.0"
-  }
+    "name": "due-or-die",
+    "version": "1.0.0",
+    "description": "Este repositório contém a solução para o desafio técnico proposto pela **Sootz (itnsify)**.  \r O objetivo é desenvolver uma aplicação **To-Do List** com autenticação de usuários e gerenciamento de tarefas, utilizando **Firebase** no backend e **Next.js** no frontend.",
+    "homepage": "https://github.com/Talyslan/due-or-die#readme",
+    "bugs": {
+        "url": "https://github.com/Talyslan/due-or-die/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Talyslan/due-or-die.git"
+    },
+    "license": "MIT",
+    "author": "Talyslan",
+    "scripts": {
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev:backend": "cd backend && npm run dev",
+        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+        "install:all": "npm install --workspaces || pnpm install"
+    },
+    "devDependencies": {
+        "concurrently": "^9.0.0",
+        "prettier": "^3.6.2"
+    }
 }

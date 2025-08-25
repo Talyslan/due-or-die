@@ -1,0 +1,12 @@
+# general
+package-lock.json
+node_modules
+
+# backend
+backend/node_modules
+backend/.env
+backend/dist
+
+# frontend
+frontend/node_modules
+frontend/.env
