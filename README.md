@@ -99,3 +99,12 @@ npm run dev:backend
 # ou
 pnpm dev:backend
 ```
+
+## 📜 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
+## 👥 Contribuições
+
+Este repositório foi feito por [Talyslan Canabarro](https://github.com/Talyslan). O repositório está aberto para pull requests e opiniões!
+Muito obrigado.
