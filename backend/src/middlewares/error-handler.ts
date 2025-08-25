@@ -10,7 +10,6 @@ export function ErrorHandler(
     const message = error.message || 'Internal server error!';
     const statusCode = error.statusCode || 500;
 
-    console.log('passei aqui');
     console.log(error);
 
     return res.status(statusCode).json({ message });
