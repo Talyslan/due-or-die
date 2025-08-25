@@ -13,10 +13,6 @@ router.get('/:userId', (req: Request, res: Response) =>
     controller.findById(req, res),
 );
 
-router.get('/:email', (req: Request, res: Response) =>
-    controller.findByEmail(req, res),
-);
-
 router.post('/', (req: Request, res: Response) => controller.create(req, res));
 
 router.put('/:userId', (req: Request, res: Response) =>

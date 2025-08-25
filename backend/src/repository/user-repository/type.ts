@@ -21,6 +21,6 @@ export interface IUserRepository {
     findById(data: IFindUserByIdDTO): Promise<User | null>;
     findByEmail(data: IFindUserByEmailDTO): Promise<User | null>;
     create(data: User): Promise<User>;
-    update(data: IUpdateUserDTO): Promise<User>;
+    update(data: IUpdateUserDTO): Promise<void>;
     remove(data: IDeleteUserByIdDTO): Promise<void>;
 }
