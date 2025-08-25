@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import app from './app';
 import { env } from './env';
 import { User } from './types';
