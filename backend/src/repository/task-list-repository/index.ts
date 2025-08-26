@@ -1,0 +1,96 @@
+import {
+    addDoc,
+    collection,
+    CollectionReference,
+    deleteDoc,
+    doc,
+    Firestore,
+    getDoc,
+    getDocs,
+    updateDoc,
+} from 'firebase/firestore';
+import { database } from '../../config/firebase';
+import { TaskList } from '../../types';
+import { BadRequest, NotFoundError } from '../../helpers/errors';
+import { IDeleteTaskListByIdDTO, IFindTaskListByIdDTO } from './type';
+
+export class TaskListRepository implements TaskListRepository {
+    private readonly collection: CollectionReference;
+    private readonly database: Firestore;
+    private readonly collectionName: string;
+
+    constructor() {
+        this.database = database;
+        this.collectionName = 'tasks-lists';
+        this.collection = collection(this.database, this.collectionName);
+    }
+
+    async findAll(): Promise<TaskList[] | null> {
+        const snapshot = await getDocs(this.collection);
+
+        if (snapshot.empty) return [];
+
+        const tasksLists = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                name: data.name,
+                userId: data.userId,
+            };
+        });
+
+        return tasksLists;
+    }
+
+    async findById(data: IFindTaskListByIdDTO): Promise<TaskList | null> {
+        const docRef = doc(this.database, this.collectionName, data.taskListId);
+
+        const snapshot = await getDoc(docRef);
+
+        if (!snapshot.exists())
+            throw new NotFoundError(
+                'Nenhuma lista de tarefa com esse identificado encontrado.',
+            );
+
+        return snapshot.data() as TaskList;
+    }
+
+    async create(data: TaskList): Promise<TaskList> {
+        const docRef = await addDoc(this.collection, {
+            name: data.name,
+            userId: data.userId,
+        });
+
+        const snapshot = await getDoc(docRef);
+
+        if (!snapshot.exists())
+            throw new BadRequest('Erro ao criar uma lista de tarefas.');
+
+        return {
+            id: docRef.id,
+            ...(snapshot.data() as Omit<TaskList, 'id'>),
+        };
+    }
+
+    async update(data: TaskList): Promise<void> {
+        const docRef = doc(this.database, this.collectionName, data.id);
+
+        return await updateDoc(docRef, {
+            name: data.name,
+            userId: data.userId,
+        });
+    }
+
+    async remove(data: IDeleteTaskListByIdDTO): Promise<void> {
+        const docRef = doc(this.database, this.collectionName, data.taskListId);
+
+        const taskList = await getDoc(docRef);
+
+        if (!taskList.exists())
+            throw new NotFoundError(
+                'Nenhuma lista de tarefas com esse identificado encontrado.',
+            );
+
+        return await deleteDoc(docRef);
+    }
+}

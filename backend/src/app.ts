@@ -3,6 +3,8 @@ import cors from 'cors';
 import { env } from './env';
 import { userRouter } from './routes/users';
 import { ErrorHandler } from './middlewares/error-handler';
+import { taskRouter } from './routes/tasks';
+import { taskListRouter } from './routes/task-lists';
 
 class App {
     public express: Express;
@@ -31,7 +33,8 @@ class App {
         );
 
         this.express.use('/users', userRouter);
-        this.express.use('/tasks', userRouter);
+        this.express.use('/tasks', taskRouter);
+        this.express.use('/tasks-lists', taskListRouter);
     }
 
     private errorHandlers() {
