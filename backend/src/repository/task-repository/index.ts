@@ -20,7 +20,6 @@ import {
     IFindTasksByOwnerDTO,
     IFindTasksByTaskListDTO,
     ITaskRepository,
-    IUpdateTaskDTO,
 } from './type';
 
 export class TaskRepository implements ITaskRepository {
@@ -42,6 +41,7 @@ export class TaskRepository implements ITaskRepository {
         const tasks = snapshot.docs.map(doc => {
             const data = doc.data();
             return {
+                id: doc.id,
                 title: data.title,
                 description: data.description,
                 status: data.status,
@@ -64,7 +64,10 @@ export class TaskRepository implements ITaskRepository {
                 'Nenhuma tarefa com esse identificado encontrado.',
             );
 
-        return snapshot.data() as Task;
+        return {
+            id: docRef.id,
+            ...(snapshot.data() as Omit<Task, 'id'>),
+        };
     }
 
     async findTasksByOwner(data: IFindTasksByOwnerDTO) {
@@ -76,7 +79,10 @@ export class TaskRepository implements ITaskRepository {
 
         const tasks: Task[] = [];
         querySnapshot.forEach(doc => {
-            tasks.push({ ...(doc.data() as Task) });
+            tasks.push({
+                id: doc.id,
+                ...(doc.data() as Omit<Task, 'id'>),
+            });
         });
 
         return tasks;
@@ -98,7 +104,8 @@ export class TaskRepository implements ITaskRepository {
         const tasks: Task[] = [];
         querySnapshot.forEach(doc => {
             tasks.push({
-                ...(doc.data() as Task),
+                id: doc.id,
+                ...(doc.data() as Omit<Task, 'id'>),
             });
         });
 
@@ -120,12 +127,13 @@ export class TaskRepository implements ITaskRepository {
         if (!snapshot.exists()) throw new BadRequest('Erro ao criar tarefa.');
 
         return {
-            ...(snapshot.data() as Task),
+            id: docRef.id,
+            ...(snapshot.data() as Omit<Task, 'id'>),
         };
     }
 
-    async update(data: IUpdateTaskDTO): Promise<void> {
-        const docRef = doc(this.database, this.collectionName, data.taskId);
+    async update(data: Task): Promise<void> {
+        const docRef = doc(this.database, this.collectionName, data.id);
 
         return await updateDoc(docRef, {
             title: data.title,

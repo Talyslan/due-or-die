@@ -1,9 +1,5 @@
 import { Task } from '../../types';
 
-export interface IUpdateTaskDTO extends Task {
-    taskId: string;
-}
-
 export interface IFindTaskByIdDTO {
     taskId: string;
 }
@@ -27,6 +23,6 @@ export interface ITaskRepository {
     create(data: Task): Promise<Task>;
     findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null>;
     findTasksByTaskList(data: IFindTasksByTaskListDTO): Promise<Task[] | null>;
-    update(data: IUpdateTaskDTO): Promise<void>;
+    update(data: Task): Promise<void>;
     remove(data: IDeleteTaskByIdDTO): Promise<void>;
 }
