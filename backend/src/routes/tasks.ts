@@ -23,4 +23,4 @@ router.delete('/:taskId', (req: Request, res: Response) =>
     controller.remove(req, res),
 );
 
-export { router as userRouter };
+export { router as taskRouter };

@@ -31,6 +31,7 @@ class App {
         );
 
         this.express.use('/users', userRouter);
+        this.express.use('/tasks', userRouter);
     }
 
     private errorHandlers() {
