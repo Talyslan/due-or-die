@@ -45,7 +45,9 @@ export class UserController {
 
         const user = await this.repository.create({ name, email, photoURL });
 
-        return res.status(201).json(user);
+        return res
+            .status(201)
+            .json({ message: 'Usuário criado com sucesso.', data: user });
     }
 
     async update(req: Request, res: Response) {
@@ -65,14 +67,16 @@ export class UserController {
         if (!email)
             throw new Error('Email não fornecido no corpo da requisição.');
 
-        const user = await this.repository.update({
+        await this.repository.update({
             userId,
             name,
             email,
             photoURL,
         });
 
-        return res.status(200).json(user);
+        return res
+            .status(204)
+            .json({ message: 'Usuáro atualizado com sucesso.' });
     }
 
     async remove(req: Request, res: Response) {

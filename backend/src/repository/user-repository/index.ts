@@ -12,7 +12,7 @@ import {
     where,
 } from 'firebase/firestore';
 import { database } from '../../config/firebase';
-import { User } from '../../types';
+import { Task, User } from '../../types';
 import {
     IDeleteUserByIdDTO,
     IFindUserByEmailDTO,
@@ -21,13 +21,14 @@ import {
     IUserRepository,
 } from './type';
 import { BadRequest, NotFoundError } from '../../helpers/errors';
+import { IFindTasksByOwnerDTO, IFindTasksByTaskListDTO, ITaskRepository } from '../task-repository/type';
 
 export class UserRepository implements IUserRepository {
     private readonly collection: CollectionReference;
     private readonly database: Firestore;
     private readonly collectionName: string;
 
-    constructor() {
+    constructor(private readonly taskRepository: ITaskRepository) {
         this.database = database;
         this.collectionName = 'users';
         this.collection = collection(this.database, this.collectionName);
@@ -72,6 +73,33 @@ export class UserRepository implements IUserRepository {
         return {
             ...querySnapshot.docs[0],
         } as User;
+    }
+
+    async findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null> {
+        // verifica se o usuário existe
+        await this.findById({ userId: data.userId });
+
+        // procura as tarefas por usuário
+        const tasks = await this.taskRepository.findTasksByOwner({
+            userId: data.userId,
+        });
+
+        return tasks;
+    }
+
+    async findTasksByTaskList(
+        data: IFindTasksByTaskListDTO,
+    ): Promise<Task[] | null> {
+        const { userId, taskListId } = data;
+
+        await this.findById({ userId });
+
+        const tasks = await this.taskRepository.findTasksByTaskList({
+            userId,
+            taskListId,
+        });
+
+        return tasks;
     }
 
     async create(data: User): Promise<User> {
