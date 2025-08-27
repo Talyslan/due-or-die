@@ -10,7 +10,7 @@ export default function Register() {
             </div>
 
             <form className="bg-white-200 w-1/2 flex flex-col items-center justify-center gap-10">
-                <h1 className="font-bold">Crie sua conta</h1>
+                <h1 className="font-bold text-7xl">Crie sua conta</h1>
 
                 <GoogleLogin />
 
