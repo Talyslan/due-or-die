@@ -20,7 +20,7 @@ router.get('/:userId/tasks', (req: Request, res: Response) =>
 );
 
 router.get('/:userId/:taskListId', (req: Request, res: Response) =>
-    controller.findTasksTaskList(req, res),
+    controller.findTasksByTaskList(req, res),
 );
 
 router.post('/', (req: Request, res: Response) => controller.create(req, res));

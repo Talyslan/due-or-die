@@ -43,10 +43,10 @@ export class UserController {
         const user = await this.repository.findById({ userId });
         const tasks = await this.repository.findTasksByOwner({ userId });
 
-        return res.status(200).json({ data: [user, tasks] });
+        return res.status(200).json({ data: { user, tasks } });
     }
 
-    async findTasksTaskList(req: Request, res: Response) {
+    async findTasksByTaskList(req: Request, res: Response) {
         const { userId, taskListId } = req.params;
 
         if (!userId)
@@ -65,7 +65,7 @@ export class UserController {
             taskListId,
         });
 
-        return res.status(200).json({ data: [user, tasksByTaskList] });
+        return res.status(200).json({ data: { user, tasksByTaskList } });
     }
 
     async create(req: Request, res: Response) {
