@@ -42,7 +42,6 @@ export class TaskRepository implements ITaskRepository {
         const tasks = await Promise.all(
             snapshot.docs.map(async doc => {
                 const data = doc.data();
-                console.log(data);
 
                 let taskList = null;
 

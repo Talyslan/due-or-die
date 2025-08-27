@@ -159,7 +159,6 @@ export class UserController {
     }
 
     public async logout(_req: Request, res: Response) {
-        console.log('entrei');
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
 

@@ -13,6 +13,7 @@ export function applyTokenCookies(
     res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
         secure: !isLocal,
+        sameSite: isLocal ? 'lax' : 'none',
         path: '/',
         maxAge: 10 * 24 * 60 * 60 * 1000,
     });
@@ -20,6 +21,7 @@ export function applyTokenCookies(
     res.cookie('access_token', accessToken, {
         httpOnly: true,
         secure: !isLocal,
+        sameSite: isLocal ? 'lax' : 'none',
         path: '/',
         maxAge: 60 * 5 * 1000,
     });
