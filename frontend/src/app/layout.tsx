@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { lobster, urbanist } from '@/fonts';
 import '@/styles/globals.css';
 import { Toaster } from 'sonner';
+import { AuthProvider } from '@/context/auth';
 
 export const metadata: Metadata = {
     title: 'Due or Die',
@@ -40,18 +41,20 @@ export default function RootLayout({
                 <meta name="author" content="Due or Die Team" />
             </head>
 
-            <body
-                className={`${urbanist.variable} ${lobster.variable} antialiased bg-background text-foreground`}
-                cz-shortcut-listen="true"
-            >
-                <Toaster
-                    position="top-center"
-                    richColors
-                    duration={3000}
-                    dir="ltr"
-                />
-                {children}
-            </body>
+            <AuthProvider>
+                <body
+                    className={`${urbanist.variable} ${lobster.variable} antialiased bg-background text-foreground`}
+                    cz-shortcut-listen="true"
+                >
+                    <Toaster
+                        position="top-center"
+                        richColors
+                        duration={3000}
+                        dir="ltr"
+                    />
+                    {children}
+                </body>
+            </AuthProvider>
         </html>
     );
 }

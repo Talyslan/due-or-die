@@ -10,9 +10,12 @@ import { LogIn } from './action';
 import { toast } from 'sonner';
 import { LoginFormData, loginSchema } from './schema';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/auth';
 
 export function LoginForm() {
     const router = useRouter();
+    const { setUser } = useAuth();
+
     const {
         register,
         handleSubmit,
@@ -26,6 +29,7 @@ export function LoginForm() {
 
         if (action.success) {
             toast.success(action.message);
+            setUser(action.data ?? null);
             router.push('/simple-list');
         } else {
             toast.error(action.message);

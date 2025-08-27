@@ -1,53 +1,20 @@
 import { PencilIcon } from '@/components';
 import { TaskList } from './_components/TaskList';
 import { firstLetterToUpperCase } from '@/utils/first-letter-to-upper-case';
+import { fetcher } from '@/services';
 
-export default function SimpleList() {
+export default async function SimpleList() {
     const data = new Date();
-
     const day = data.getDate();
     const month = firstLetterToUpperCase(
         data.toLocaleString('pt-BR', { month: 'long' }),
     );
     const year = data.getFullYear();
 
-    const tasks: Task[] = [
-        {
-            id: '1',
-            title: 'Finalizar resumo de Estruturas de Dados',
-            description:
-                'Preparar material de revisão para a prova de quinta-feira.',
-            status: 'doing',
-            priority: 'high',
-            taskListId: 'study',
-            userId: 'user123',
-            createdAt: new Date(),
-            updateAt: new Date(),
-        },
-        {
-            id: '2',
-            title: 'Assistir aula gravada de Matemática Discreta',
-            description:
-                'Ver a gravação da aula sobre grafos antes da próxima turma.',
-            status: 'to-do',
-            priority: 'medium',
-            taskListId: 'study',
-            userId: 'user123',
-            createdAt: new Date(),
-            updateAt: new Date(),
-        },
-        {
-            id: '3',
-            title: 'Ir ao mercado',
-            description: 'Comprar pão, leite, ovos e café.',
-            status: 'to-do',
-            priority: 'low',
-            taskListId: 'personal',
-            userId: 'user123',
-            createdAt: new Date(),
-            updateAt: new Date(),
-        },
-    ];
+    const { data: user } = await fetcher<IFetch<User>>(`/users/me`);
+    const { data: result } = await fetcher<IFetch<Task[]>>(
+        `/users/${user.id}/tasks`,
+    );
 
     return (
         <div className="flex justify-between gap-10 h-full">
@@ -57,7 +24,7 @@ export default function SimpleList() {
                     Hoje, {day} de {month} de {year}
                 </h2>
 
-                <TaskList tasks={tasks} />
+                <TaskList tasks={result.tasks} />
             </div>
 
             <div className="w-full h-full flex flex-col justify-center items-center bg-main-color-100/10 shadow-lg gap-2">

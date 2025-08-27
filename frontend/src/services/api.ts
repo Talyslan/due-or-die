@@ -1,4 +1,5 @@
 import { env } from '@/env';
+import { applyCorrectHeaders } from '@/utils/apply-correct-headers';
 
 export async function fetcher<T>(
     url: string,
@@ -6,13 +7,12 @@ export async function fetcher<T>(
 ): Promise<T> {
     const fullURL = `${env.NEXT_PUBLIC_API_URL}${url}`;
 
+    const headers = await applyCorrectHeaders(config);
+
     try {
         const response = await fetch(fullURL, {
             ...config,
-            headers: {
-                'Content-Type': 'application/json',
-                ...(config.headers || {}),
-            },
+            headers,
             credentials: 'include',
         });
 
