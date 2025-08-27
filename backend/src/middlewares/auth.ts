@@ -14,8 +14,6 @@ export const authMiddleware = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = req.cookies.access_token as string;
-            
-            console.log(req.cookies);
 
             if (!token) {
                 throw new UnauthorizedError(
@@ -35,7 +33,7 @@ export const authMiddleware = () => {
                     'Não autorizado: Usuário não encontrado!',
                 );
 
-            req.user = searchedUser;
+            req.user = { id: userId, ...searchedUser };
 
             return next();
         } catch (err: any) {

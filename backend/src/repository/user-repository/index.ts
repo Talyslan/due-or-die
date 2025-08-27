@@ -61,7 +61,7 @@ export class UserRepository implements IUserRepository {
         return users;
     }
 
-    async findById(data: IFindUserByIdDTO): Promise<User | null> {
+    async findById(data: IFindUserByIdDTO): Promise<Omit<User, 'id'> | null> {
         const docRef = doc(this.database, this.collectionName, data.userId);
 
         const snapshot = await getDoc(docRef);
@@ -70,6 +70,8 @@ export class UserRepository implements IUserRepository {
             throw new NotFoundError(
                 'Nenhum usuário com esse identificado encontrado.',
             );
+
+        console.log(snapshot.data());
 
         return snapshot.data() as User;
     }

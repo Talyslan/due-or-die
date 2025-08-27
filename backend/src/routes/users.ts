@@ -18,6 +18,10 @@ router.get('/', authMiddleware(), (req: Request, res: Response) =>
     controller.findAll(req, res),
 );
 
+router.get('/me', authMiddleware(), (req: Request, res: Response) => {
+    return res.json({ data: { id: req.user?.id, email: req.user?.email } });
+});
+
 router.get('/:userId', authMiddleware(), (req: Request, res: Response) =>
     controller.findById(req, res),
 );

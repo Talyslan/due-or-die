@@ -27,7 +27,7 @@ export interface ICreateUserDTO {
 
 export interface IUserRepository {
     findAll(): Promise<User[] | null>;
-    findById(data: IFindUserByIdDTO): Promise<User | null>;
+    findById(data: IFindUserByIdDTO): Promise<Omit<User, 'id'> | null>;
     findByEmail(data: IFindUserByEmailDTO): Promise<UserWithPassword | null>;
     findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null>;
     findTasksListsByOwner(
