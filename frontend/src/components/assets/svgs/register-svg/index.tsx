@@ -1,4 +1,6 @@
-export function RegisterSVG() {
+import { IProps } from '../types';
+
+export function RegisterSVG({ className }: IProps) {
     return (
         <svg
             width="500"
@@ -6,6 +8,7 @@ export function RegisterSVG() {
             viewBox="0 0 500 500"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className={className}
         >
             <path
                 opacity="0.18"
@@ -143,41 +146,41 @@ export function RegisterSVG() {
                 >
                     <stop
                         offset="0.02"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.05"
                     />
                     <stop
                         offset="0.03"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.16"
                     />
                     <stop
                         offset="0.04"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.24"
                     />
                     <stop
                         offset="0.06"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.31"
                     />
                     <stop
                         offset="0.07"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.36"
                     />
-                    <stop offset="0.1" stop-color="white" stop-opacity="0.38" />
+                    <stop offset="0.1" stopColor="white" stop-opacity="0.38" />
                     <stop
                         offset="0.16"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.39"
                     />
                     <stop
                         offset="0.84"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.68"
                     />
-                    <stop offset="1" stop-color="white" />
+                    <stop offset="1" stopColor="white" />
                 </linearGradient>
                 <linearGradient
                     id="paint1_linear_4_405"
@@ -189,41 +192,41 @@ export function RegisterSVG() {
                 >
                     <stop
                         offset="0.02"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.05"
                     />
                     <stop
                         offset="0.03"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.16"
                     />
                     <stop
                         offset="0.04"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.24"
                     />
                     <stop
                         offset="0.06"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.31"
                     />
                     <stop
                         offset="0.07"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.36"
                     />
-                    <stop offset="0.1" stop-color="white" stop-opacity="0.38" />
+                    <stop offset="0.1" stopColor="white" stop-opacity="0.38" />
                     <stop
                         offset="0.16"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.39"
                     />
                     <stop
                         offset="0.84"
-                        stop-color="white"
+                        stopColor="white"
                         stop-opacity="0.68"
                     />
-                    <stop offset="1" stop-color="white" />
+                    <stop offset="1" stopColor="white" />
                 </linearGradient>
                 <linearGradient
                     id="paint2_linear_4_405"
@@ -259,8 +262,8 @@ export function RegisterSVG() {
                     y2="357.16"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint5_linear_4_405"
@@ -270,8 +273,8 @@ export function RegisterSVG() {
                     y2="416.44"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint6_linear_4_405"
@@ -307,8 +310,8 @@ export function RegisterSVG() {
                     y2="257.55"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint9_linear_4_405"
@@ -318,8 +321,8 @@ export function RegisterSVG() {
                     y2="323"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint10_linear_4_405"
@@ -329,8 +332,8 @@ export function RegisterSVG() {
                     y2="237.18"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint11_linear_4_405"
@@ -340,8 +343,8 @@ export function RegisterSVG() {
                     y2="156.53"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint12_linear_4_405"
@@ -351,8 +354,8 @@ export function RegisterSVG() {
                     y2="310.17"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint13_linear_4_405"
@@ -362,8 +365,8 @@ export function RegisterSVG() {
                     y2="256.01"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint14_linear_4_405"
@@ -373,8 +376,8 @@ export function RegisterSVG() {
                     y2="249.49"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
             </defs>
         </svg>
