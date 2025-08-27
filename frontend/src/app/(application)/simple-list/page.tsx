@@ -1,13 +1,14 @@
 import { PencilIcon } from '@/components';
 import { TaskList } from './_components/TaskList';
+import { firstLetterToUpperCase } from '@/utils/first-letter-to-upper-case';
 
 export default function SimpleList() {
     const data = new Date();
 
     const day = data.getDate();
-    const month = data
-        .toLocaleString('pt-BR', { month: 'long' })
-        .replace(/^\w/, c => c.toUpperCase());
+    const month = firstLetterToUpperCase(
+        data.toLocaleString('pt-BR', { month: 'long' }),
+    );
     const year = data.getFullYear();
 
     const tasks: Task[] = [
