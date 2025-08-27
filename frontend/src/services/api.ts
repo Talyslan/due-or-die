@@ -4,8 +4,8 @@ export async function fetcher<T>(
     url: string,
     config: RequestInit = {},
 ): Promise<T> {
-    const fullURL = env.NEXT_PUBLIC_API_URL + url;
-
+    const fullURL = `${env.NEXT_PUBLIC_API_URL}${url}`;
+    
     try {
         const response = await fetch(fullURL, {
             ...config,
@@ -13,6 +13,7 @@ export async function fetcher<T>(
                 'Content-Type': 'application/json',
                 ...(config.headers || {}),
             },
+            credentials: 'include',
         });
 
         if (!response.ok) {
