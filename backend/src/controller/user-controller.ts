@@ -46,26 +46,20 @@ export class UserController {
         return res.status(200).json({ data: { user, tasks } });
     }
 
-    async findTasksByTaskList(req: Request, res: Response) {
-        const { userId, taskListId } = req.params;
+    async findTasksListsByOwner(req: Request, res: Response) {
+        const { userId } = req.params;
 
         if (!userId)
             throw new Error(
                 'Identificador do usuário não fornecido na requisição.',
             );
 
-        if (!taskListId)
-            throw new Error(
-                'Identificador da lista de tarefas não fornecida na requisição.',
-            );
-
         const user = await this.repository.findById({ userId });
-        const tasksByTaskList = await this.repository.findTasksByTaskList({
+        const tasksLists = await this.repository.findTasksListsByOwner({
             userId,
-            taskListId,
         });
 
-        return res.status(200).json({ data: { user, tasksByTaskList } });
+        return res.status(200).json({ data: { user, tasksLists } });
     }
 
     async create(req: Request, res: Response) {

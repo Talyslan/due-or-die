@@ -12,7 +12,7 @@ import {
     where,
 } from 'firebase/firestore';
 import { database } from '../../config/firebase';
-import { Task, User } from '../../types';
+import { Task, TaskList, User } from '../../types';
 import {
     IDeleteUserByIdDTO,
     IFindUserByEmailDTO,
@@ -21,14 +21,22 @@ import {
     IUserRepository,
 } from './type';
 import { BadRequest, NotFoundError } from '../../helpers/errors';
-import { IFindTasksByOwnerDTO, IFindTasksByTaskListDTO, ITaskRepository } from '../task-repository/type';
+import {
+    IFindTasksByOwnerDTO,
+    IFindTasksByTaskListDTO,
+    ITaskRepository,
+} from '../task-repository/type';
+import { ITaskListRepository } from '../task-list-repository/type';
 
 export class UserRepository implements IUserRepository {
     private readonly collection: CollectionReference;
     private readonly database: Firestore;
     private readonly collectionName: string;
 
-    constructor(private readonly taskRepository: ITaskRepository) {
+    constructor(
+        private readonly taskRepository: ITaskRepository,
+        private readonly taskListRepository: ITaskListRepository,
+    ) {
         this.database = database;
         this.collectionName = 'users';
         this.collection = collection(this.database, this.collectionName);
@@ -87,19 +95,18 @@ export class UserRepository implements IUserRepository {
         return tasks;
     }
 
-    async findTasksByTaskList(
+    async findTasksListsByOwner(
         data: IFindTasksByTaskListDTO,
-    ): Promise<Task[] | null> {
-        const { userId, taskListId } = data;
+    ): Promise<TaskList[] | null> {
+        const { userId } = data;
 
         await this.findById({ userId });
 
-        const tasks = await this.taskRepository.findTasksByTaskList({
+        const tasksLists = await this.taskListRepository.findTasksListsByOwner({
             userId,
-            taskListId,
         });
 
-        return tasks;
+        return tasksLists;
     }
 
     async create(data: User): Promise<User> {

@@ -7,12 +7,18 @@ import {
     Firestore,
     getDoc,
     getDocs,
+    query,
     updateDoc,
+    where,
 } from 'firebase/firestore';
 import { database } from '../../config/firebase';
-import { TaskList } from '../../types';
+import { Task, TaskList } from '../../types';
 import { BadRequest, NotFoundError } from '../../helpers/errors';
-import { IDeleteTaskListByIdDTO, IFindTaskListByIdDTO } from './type';
+import {
+    IDeleteTaskListByIdDTO,
+    IFindTaskListByIdDTO,
+    IFindTasksListsByOwnerDTO,
+} from './type';
 
 export class TaskListRepository implements TaskListRepository {
     private readonly collection: CollectionReference;
@@ -25,7 +31,7 @@ export class TaskListRepository implements TaskListRepository {
         this.collection = collection(this.database, this.collectionName);
     }
 
-    async findAll(): Promise<TaskList[] | null> {
+    async findAll(): Promise<Array<Omit<TaskList, 'tasks'>> | null> {
         const snapshot = await getDocs(this.collection);
 
         if (snapshot.empty) return [];
@@ -53,6 +59,46 @@ export class TaskListRepository implements TaskListRepository {
             );
 
         return snapshot.data() as TaskList;
+    }
+
+    async findTasksListsByOwner(
+        data: IFindTasksListsByOwnerDTO,
+    ): Promise<TaskList[] | null> {
+        const taskListsQuery = query(
+            this.collection,
+            where('userId', '==', data.userId),
+        );
+        const taskListsSnapshot = await getDocs(taskListsQuery);
+
+        if (taskListsSnapshot.empty) return [];
+
+        const tasksLists: TaskList[] = [];
+
+        const tasksQuery = query(
+            collection(this.database, 'tasks'),
+            where('userId', '==', data.userId),
+        );
+        const tasksSnapshot = await getDocs(tasksQuery);
+        const tasks = tasksSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...(doc.data() as Omit<Task, 'id'>),
+        }));
+
+        taskListsSnapshot.forEach(doc => {
+            const taskListData = {
+                id: doc.id,
+                ...(doc.data() as Omit<TaskList, 'id'>),
+            } as TaskList;
+
+            // Filtra as tasks que pertencem a essa taskList
+            taskListData.tasks = tasks.filter(
+                task => task.taskListId === doc.id,
+            );
+
+            tasksLists.push(taskListData);
+        });
+
+        return tasksLists;
     }
 
     async create(data: TaskList): Promise<TaskList> {

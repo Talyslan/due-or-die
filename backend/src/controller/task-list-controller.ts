@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { ITaskRepository } from '../repository/task-repository/type';
 import { BadRequest } from '../helpers/errors';
 import { ITaskListRepository } from '../repository/task-list-repository/type';
 

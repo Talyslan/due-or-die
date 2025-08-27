@@ -1,5 +1,6 @@
-import { Task, User } from '../../types';
-import { IFindTasksByOwnerDTO, IFindTasksByTaskListDTO } from '../task-repository/type';
+import { Task, TaskList, User } from '../../types';
+import { IFindTasksListsByOwnerDTO } from '../task-list-repository/type';
+import { IFindTasksByOwnerDTO } from '../task-repository/type';
 
 export interface IUpdateUserDTO extends User {
     userId: string;
@@ -22,7 +23,9 @@ export interface IUserRepository {
     findById(data: IFindUserByIdDTO): Promise<User | null>;
     findByEmail(data: IFindUserByEmailDTO): Promise<User | null>;
     findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null>;
-    findTasksByTaskList(data: IFindTasksByTaskListDTO): Promise<Task[] | null>;
+    findTasksListsByOwner(
+        data: IFindTasksListsByOwnerDTO,
+    ): Promise<TaskList[] | null>;
     create(data: User): Promise<User>;
     update(data: IUpdateUserDTO): Promise<void>;
     remove(data: IDeleteUserByIdDTO): Promise<void>;

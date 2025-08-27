@@ -13,8 +13,8 @@ export interface IFindTasksByOwnerDTO {
 }
 
 export interface IFindTasksByTaskListDTO {
-    taskListId: string;
     userId: string;
+    taskListId: string;
 }
 
 export interface ITaskRepository {
