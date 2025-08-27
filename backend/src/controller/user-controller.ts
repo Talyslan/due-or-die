@@ -32,6 +32,42 @@ export class UserController {
         return res.status(200).json(user);
     }
 
+    async findTasksByOwner(req: Request, res: Response) {
+        const { userId } = req.params;
+
+        if (!userId)
+            throw new Error(
+                'Identificador do usuário não fornecido na requisição.',
+            );
+
+        const user = await this.repository.findById({ userId });
+        const tasks = await this.repository.findTasksByOwner({ userId });
+
+        return res.status(200).json({ data: [user, tasks] });
+    }
+
+    async findTasksTaskList(req: Request, res: Response) {
+        const { userId, taskListId } = req.params;
+
+        if (!userId)
+            throw new Error(
+                'Identificador do usuário não fornecido na requisição.',
+            );
+
+        if (!taskListId)
+            throw new Error(
+                'Identificador da lista de tarefas não fornecida na requisição.',
+            );
+
+        const user = await this.repository.findById({ userId });
+        const tasksByTaskList = await this.repository.findTasksByTaskList({
+            userId,
+            taskListId,
+        });
+
+        return res.status(200).json({ data: [user, tasksByTaskList] });
+    }
+
     async create(req: Request, res: Response) {
         const { name, email, photoURL } = req.body || {};
 
