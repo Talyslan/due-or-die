@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
 import { IUserRepository } from '../repository/user-repository/type';
+import { UnauthorizedError } from '../helpers/errors';
+import { createRefreshToken, createToken } from '../helpers/tokens';
+import { applyTokenCookies } from '../helpers/apply-tokens';
+import bcrypt from 'bcrypt';
 
 export class UserController {
     constructor(private readonly repository: IUserRepository) {}
@@ -63,21 +67,59 @@ export class UserController {
     }
 
     async create(req: Request, res: Response) {
-        const { name, email, photoURL } = req.body || {};
+        const { name, email, password, photoURL } = req.body || {};
 
-        if (!name && !email)
-            throw new Error(
-                'Nome e email não fornecido no corpo da requisição.',
-            );
         if (!name)
             throw new Error('Nome não fornecido no corpo da requisição.');
         if (!email) throw new Error('Email não fornecido no corpo requisição.');
+        if (!password)
+            throw new Error('Senha não fornecida no corpo requisição.');
 
-        const user = await this.repository.create({ name, email, photoURL });
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const docRef = await this.repository.create({
+            name,
+            email,
+            password: hashedPassword,
+            photoURL,
+        });
+
+        const user = {
+            id: docRef.id,
+            name,
+            email,
+            photoURL,
+        };
 
         return res
             .status(201)
             .json({ message: 'Usuário criado com sucesso.', data: user });
+    }
+
+    async login(req: Request, res: Response) {
+        const { email, password } = req.body;
+
+        if (!email) throw new Error('Email não fornecido no corpo requisição.');
+        if (!password)
+            throw new Error('Senha não fornecida no corpo requisição.');
+
+        const user = await this.repository.findByEmail({ email });
+
+        if (!user)
+            throw new UnauthorizedError(
+                'Usuário não encontrado. Por favor, crie sua conta.',
+            );
+
+        const isValid = await bcrypt.compare(password, user.password);
+
+        if (!isValid) throw new UnauthorizedError('Senha incorreta!');
+
+        const accessToken = createToken(user.id);
+        const refreshToken = createRefreshToken(user.id);
+
+        applyTokenCookies(res, { accessToken, refreshToken });
+
+        return res.status(200).json({ message: 'Usuário logado com sucesso!' });
     }
 
     async update(req: Request, res: Response) {

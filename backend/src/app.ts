@@ -5,7 +5,7 @@ import { userRouter } from './routes/users';
 import { ErrorHandler } from './middlewares/error-handler';
 import { taskRouter } from './routes/tasks';
 import { taskListRouter } from './routes/task-lists';
-
+import cookieParser from 'cookie-parser';
 class App {
     public express: Express;
 
@@ -23,6 +23,7 @@ class App {
                 credentials: true,
             }),
         );
+        this.express.use(cookieParser());
         this.express.use(express.json());
         this.express.use(express.urlencoded({ extended: false }));
     }

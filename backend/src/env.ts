@@ -12,6 +12,7 @@ const envSchema = z.object({
     FIREBASE_PROJECT_ID: z.string(),
     FIREBASE_AUTH_DOMAIN: z.string(),
     FIREBASE_APP_ID: z.string(),
+    ENVIRONMENT: z.enum(['local', 'production']),
 });
 
 export const env = envSchema.parse(process.env);

@@ -2,10 +2,13 @@ import { Request, Response, Router } from 'express';
 import { wrapRouter } from '../helpers/catch-errors';
 import { TaskListController } from '../controller/task-list-controller';
 import { TaskListRepository } from '../repository/task-list-repository';
+import { authMiddleware } from '../middlewares/auth';
 
 const router = wrapRouter(Router());
 const repository = new TaskListRepository();
 const controller = new TaskListController(repository);
+
+router.use(authMiddleware());
 
 router.get('/', (req: Request, res: Response) => controller.findAll(req, res));
 

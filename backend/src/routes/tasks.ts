@@ -3,11 +3,14 @@ import { wrapRouter } from '../helpers/catch-errors';
 import { TaskRepository } from '../repository/task-repository';
 import { TaskController } from '../controller/task-controller';
 import { TaskListRepository } from '../repository/task-list-repository';
+import { authMiddleware } from '../middlewares/auth';
 
 const router = wrapRouter(Router());
 const taskListRepository = new TaskListRepository();
 const repository = new TaskRepository(taskListRepository);
 const controller = new TaskController(repository);
+
+router.use(authMiddleware());
 
 router.get('/', (req: Request, res: Response) => controller.findAll(req, res));
 

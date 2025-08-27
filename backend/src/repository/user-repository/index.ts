@@ -12,8 +12,9 @@ import {
     where,
 } from 'firebase/firestore';
 import { database } from '../../config/firebase';
-import { Task, TaskList, User } from '../../types';
+import { Task, TaskList, User, UserWithPassword } from '../../types';
 import {
+    ICreateUserDTO,
     IDeleteUserByIdDTO,
     IFindUserByEmailDTO,
     IFindUserByIdDTO,
@@ -73,14 +74,21 @@ export class UserRepository implements IUserRepository {
         return snapshot.data() as User;
     }
 
-    async findByEmail(data: IFindUserByEmailDTO): Promise<User | null> {
+    async findByEmail(
+        data: IFindUserByEmailDTO,
+    ): Promise<UserWithPassword | null> {
         const q = query(this.collection, where('email', '==', data.email));
-
         const querySnapshot = await getDocs(q);
 
+        if (querySnapshot.empty) return null;
+
+        const docSnap = querySnapshot.docs[0];
+        if (!docSnap) return null;
+
         return {
-            ...querySnapshot.docs[0],
-        } as User;
+            id: docSnap.id,
+            ...(docSnap.data() as Omit<UserWithPassword, 'id'>),
+        };
     }
 
     async findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null> {
@@ -109,11 +117,12 @@ export class UserRepository implements IUserRepository {
         return tasksLists;
     }
 
-    async create(data: User): Promise<User> {
+    async create(data: ICreateUserDTO): Promise<User> {
         const docRef = await addDoc(this.collection, {
             name: data.name,
             email: data.email,
             photoURL: data.photoURL ?? null,
+            password: data.password,
         });
 
         const snapshot = await getDoc(docRef);
@@ -121,7 +130,8 @@ export class UserRepository implements IUserRepository {
         if (!snapshot.exists()) throw new BadRequest('Erro ao criar usuário.');
 
         return {
-            ...(snapshot.data() as User),
+            id: snapshot.id,
+            ...(snapshot.data() as Omit<User, 'id'>),
         };
     }
 
