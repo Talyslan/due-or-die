@@ -1,4 +1,6 @@
-export function LoginSVG() {
+import { IProps } from '../types';
+
+export function LoginSVG({ className }: IProps) {
     return (
         <svg
             width="500"
@@ -6,6 +8,7 @@ export function LoginSVG() {
             viewBox="0 0 500 500"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className={className}
         >
             <path
                 d="M485.76 95.61V299.45C485.79 311.89 475.73 322 463.29 322.04H43.33C30.86 322.04 20.74 311.95 20.74 299.48V95.61C20.76 83.14 30.86 73.03 43.33 73.02H463.18C474.53 73.02 484.11 81.45 485.57 92.7C485.7 93.67 485.76 94.64 485.76 95.61Z"
@@ -43,8 +46,8 @@ export function LoginSVG() {
                 d="M323.12 252.28H165.95C162.741 252.28 160.14 254.881 160.14 258.09V267.65C160.14 270.859 162.741 273.46 165.95 273.46H323.12C326.329 273.46 328.93 270.859 328.93 267.65V258.09C328.93 254.881 326.329 252.28 323.12 252.28Z"
                 fill="white"
                 stroke="#A0A0A0"
-                stroke-width="0.65"
-                stroke-miterlimit="10"
+                strokeWidth="0.65"
+                strokeMiterlimit="10"
             />
             <path
                 d="M340.33 261.89V259.45H342.25V257.88H340.33V256.71H342.25V255.14H338.4V261.89C335.79 262.42 334.11 264.97 334.64 267.58C335.17 270.19 337.72 271.87 340.33 271.34C342.94 270.81 344.62 268.26 344.09 265.65C343.7 263.76 342.22 262.28 340.33 261.89ZM339.37 269.96C337.52 269.96 336.01 268.47 336.01 266.61C336.01 264.75 337.5 263.25 339.36 263.25C341.22 263.25 342.72 264.74 342.72 266.6C342.72 268.45 341.22 269.95 339.37 269.96Z"
@@ -200,8 +203,8 @@ export function LoginSVG() {
                     y2="280.74"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="white" stop-opacity="0" />
-                    <stop offset="1" stop-color="white" />
+                    <stop stopColor="white" stopOpacity="0" />
+                    <stop offset="1" stopColor="white" />
                 </linearGradient>
                 <linearGradient
                     id="paint1_linear_4_207"
@@ -211,8 +214,8 @@ export function LoginSVG() {
                     y2="72.54"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint2_linear_4_207"
@@ -222,33 +225,33 @@ export function LoginSVG() {
                     y2="421.64"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-opacity="0" />
+                    <stop stopOpacity="0" />
                     <stop
                         offset="0.02"
-                        stop-color="#030304"
-                        stop-opacity="0.04"
+                        stopColor="#030304"
+                        stopOpacity="0.04"
                     />
                     <stop
                         offset="0.18"
-                        stop-color="#181821"
-                        stop-opacity="0.39"
+                        stopColor="#181821"
+                        stopOpacity="0.39"
                     />
                     <stop
                         offset="0.35"
-                        stop-color="#292839"
-                        stop-opacity="0.66"
+                        stopColor="#292839"
+                        stopOpacity="0.66"
                     />
                     <stop
                         offset="0.53"
-                        stop-color="#363449"
-                        stop-opacity="0.85"
+                        stopColor="#363449"
+                        stopOpacity="0.85"
                     />
                     <stop
                         offset="0.73"
-                        stop-color="#3D3B53"
-                        stop-opacity="0.96"
+                        stopColor="#3D3B53"
+                        stopOpacity="0.96"
                     />
-                    <stop offset="0.99" stop-color="#3F3D56" />
+                    <stop offset="0.99" stopColor="#3F3D56" />
                 </linearGradient>
                 <linearGradient
                     id="paint3_linear_4_207"
@@ -258,8 +261,8 @@ export function LoginSVG() {
                     y2="339.42"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint4_linear_4_207"
@@ -269,8 +272,8 @@ export function LoginSVG() {
                     y2="340.14"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint5_linear_4_207"
@@ -280,8 +283,8 @@ export function LoginSVG() {
                     y2="271.75"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="white" stop-opacity="0" />
-                    <stop offset="1" stop-color="white" />
+                    <stop stopColor="white" stopOpacity="0" />
+                    <stop offset="1" stopColor="white" />
                 </linearGradient>
                 <linearGradient
                     id="paint6_linear_4_207"
@@ -291,8 +294,8 @@ export function LoginSVG() {
                     y2="480.49"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint7_linear_4_207"
@@ -302,8 +305,8 @@ export function LoginSVG() {
                     y2="484.66"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint8_linear_4_207"
@@ -313,8 +316,8 @@ export function LoginSVG() {
                     y2="226.74"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint9_linear_4_207"
@@ -324,8 +327,8 @@ export function LoginSVG() {
                     y2="326.57"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint10_linear_4_207"
@@ -335,8 +338,8 @@ export function LoginSVG() {
                     y2="172.82"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint11_linear_4_207"
@@ -346,8 +349,8 @@ export function LoginSVG() {
                     y2="324.52"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint12_linear_4_207"
@@ -357,8 +360,8 @@ export function LoginSVG() {
                     y2="164.25"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint13_linear_4_207"
@@ -368,8 +371,8 @@ export function LoginSVG() {
                     y2="158.92"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint14_linear_4_207"
@@ -379,8 +382,8 @@ export function LoginSVG() {
                     y2="305.3"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
                     id="paint15_linear_4_207"
@@ -390,8 +393,8 @@ export function LoginSVG() {
                     y2="312.46"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#231F20" stop-opacity="0" />
-                    <stop offset="1" stop-color="#231F20" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
+                    <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
             </defs>
         </svg>
