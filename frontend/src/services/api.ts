@@ -18,7 +18,7 @@ export async function fetcher<T>(
         if (!response.ok) {
             const error = await response.json();
             console.log(error);
-            throw new Error(error);
+            throw new Error(error.message || 'Erro desconhecido');
         }
 
         return (await response.json()) as T;

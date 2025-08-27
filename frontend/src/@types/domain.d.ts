@@ -26,6 +26,7 @@ interface TaskList {
 interface User {
     name: string;
     email: string;
+    password: string;
     photoURL?: string | undefined;
 
     createdAt: Data;
