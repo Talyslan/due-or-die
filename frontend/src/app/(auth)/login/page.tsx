@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Button, Input, LoginSVG } from '@/components';
 import Link from 'next/link';
 import { GoogleLogin } from '@/components/GoogleLogin';
