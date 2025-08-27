@@ -38,6 +38,12 @@ router.post('/login', (req: Request, res: Response) =>
     controller.login(req, res),
 );
 
+router.post('/refresh-token', (req, res) => controller.refreshToken(req, res));
+
+router.post('/logout', authMiddleware(), (req, res) =>
+    controller.logout(req, res),
+);
+
 router.put('/:userId', authMiddleware(), (req: Request, res: Response) =>
     controller.update(req, res),
 );

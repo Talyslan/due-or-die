@@ -1,9 +1,15 @@
 import { Request, Response } from 'express';
 import { IUserRepository } from '../repository/user-repository/type';
 import { UnauthorizedError } from '../helpers/errors';
-import { createRefreshToken, createToken } from '../helpers/tokens';
+import {
+    createRefreshToken,
+    createToken,
+    decodeToken,
+    verifyRefreshToken,
+} from '../helpers/tokens';
 import { applyTokenCookies } from '../helpers/apply-tokens';
 import bcrypt from 'bcrypt';
+import { env } from '../env';
 
 export class UserController {
     constructor(private readonly repository: IUserRepository) {}
@@ -120,6 +126,39 @@ export class UserController {
         applyTokenCookies(res, { accessToken, refreshToken });
 
         return res.status(200).json({ message: 'Usuário logado com sucesso!' });
+    }
+
+    public async refreshToken(req: Request, res: Response) {
+        const refreshToken = req.cookies.refresh_token as string;
+
+        if (!refreshToken)
+            throw new UnauthorizedError('O refresh token não foi fornecido.');
+
+        if (!verifyRefreshToken(refreshToken))
+            throw new UnauthorizedError('Refresh token inválido.');
+
+        const userId = decodeToken(refreshToken);
+
+        const newToken = createToken(userId);
+
+        const isLocal = env.ENVIRONMENT === 'local';
+
+        res.cookie('access_token', newToken, {
+            httpOnly: true,
+            secure: !isLocal,
+            path: '/',
+            maxAge: 60 * 5 * 1000,
+        });
+
+        res.status(200).json({ message: 'token refreshed' });
+    }
+
+    public async logout(_req: Request, res: Response) {
+        console.log('entrei')
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
+
+        res.status(200).json({ message: 'Logout foi bem sucedido!' });
     }
 
     async update(req: Request, res: Response) {
