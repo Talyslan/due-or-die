@@ -32,7 +32,7 @@ export function LogoutIcon() {
                     y="-2.28564"
                     width="18.1805"
                     height="18.1805"
-                    fill="#8B8A8A"
+                    fill="currentColor"
                 />
             </g>
             <defs>

@@ -33,7 +33,7 @@ export function ProfileIcon({ className }: IProps) {
                     y="-4"
                     width="29.3684"
                     height="29.3684"
-                    fill="#8B8A8A"
+                    fill="currentColor"
                 />
             </g>
             <defs>

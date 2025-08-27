@@ -30,7 +30,7 @@ export function PencilIcon() {
                     y="-18.3333"
                     width="88.3261"
                     height="88.3261"
-                    fill="#B6B5B5"
+                    fill="currentColor"
                 />
             </g>
             <defs>

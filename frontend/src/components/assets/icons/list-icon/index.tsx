@@ -30,7 +30,7 @@ export function ListIcon() {
                     y="-5"
                     width="26.4978"
                     height="26.4978"
-                    fill="#242424"
+                    fill="currentColor"
                 />
             </g>
             <defs>

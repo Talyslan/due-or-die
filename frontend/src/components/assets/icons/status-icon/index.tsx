@@ -25,7 +25,7 @@ export function StatusIcon() {
                 />
             </mask>
             <g mask="url(#mask0_26_507)">
-                <rect y="-5" width="19" height="26" fill="#242424" />
+                <rect y="-5" width="19" height="26" fill="currentColor" />
             </g>
             <defs>
                 <pattern

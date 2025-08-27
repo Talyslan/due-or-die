@@ -32,7 +32,7 @@ export function PlusIcon() {
                     y="-3"
                     width="19.5789"
                     height="19.5789"
-                    fill="#EAEAEA"
+                    fill="currentColor"
                 />
             </g>
             <defs>

@@ -30,7 +30,7 @@ export function FilterIcon() {
                     y="-4.5"
                     width="29.3684"
                     height="29.3684"
-                    fill="#0B4EA7"
+                    fill="currentColor"
                 />
             </g>
             <defs>

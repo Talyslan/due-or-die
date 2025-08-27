@@ -31,7 +31,7 @@ export function CollapseIcon() {
                     y="-1.401"
                     width="27.2713"
                     height="27.1419"
-                    fill="#0B4EA7"
+                    fill="currentColor"
                 />
             </g>
             <defs>
