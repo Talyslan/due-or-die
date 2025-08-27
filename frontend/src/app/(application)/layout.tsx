@@ -7,11 +7,9 @@ interface AppLayoutProp {
 
 export default function AppLayout({ children }: AppLayoutProp) {
     return (
-        <>
-            <SidebarProvider>
-                <AppSidebar />
-                <main className="pl-10 pt-10">{children}</main>
-            </SidebarProvider>
-        </>
+        <SidebarProvider>
+            <AppSidebar />
+            <main className="flex flex-col gap-5 w-full">{children}</main>
+        </SidebarProvider>
     );
 }

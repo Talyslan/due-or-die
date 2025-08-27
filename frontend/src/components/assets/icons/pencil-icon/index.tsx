@@ -1,4 +1,6 @@
-export function PencilIcon() {
+import { IProps } from '../../types';
+
+export function PencilIcon({ className }: IProps) {
     return (
         <svg
             width="51"
@@ -7,6 +9,7 @@ export function PencilIcon() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
+            className={className}
         >
             <mask
                 id="mask0_26_652"

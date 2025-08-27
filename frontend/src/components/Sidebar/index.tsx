@@ -25,7 +25,10 @@ export function AppSidebar() {
     const { state } = useSidebar();
 
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar
+            collapsible="icon"
+            className="border-none shadow-lg bg-main-color-100/10"
+        >
             <SidebarHeader className="flex flex-row w-full justify-between items-center mt-5">
                 {state === 'expanded' && (
                     <LogoLightTheme className="bg-white-200 rounded-lg h-12 w-auto" />
