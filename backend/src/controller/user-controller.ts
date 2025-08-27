@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IUserRepository } from '../repository/user-repository/type';
-import { UnauthorizedError } from '../helpers/errors';
+import { BadRequest, UnauthorizedError } from '../helpers/errors';
 import {
     createRefreshToken,
     createToken,
@@ -81,6 +81,12 @@ export class UserController {
         if (!password)
             throw new Error('Senha não fornecida no corpo requisição.');
 
+        const user = await this.repository.findByEmail({ email });
+        if (user)
+            throw new BadRequest(
+                'Usuário já existe, por favor, entre em sua conta.',
+            );
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const docRef = await this.repository.create({
@@ -90,16 +96,15 @@ export class UserController {
             photoURL,
         });
 
-        const user = {
-            id: docRef.id,
-            name,
-            email,
-            photoURL,
-        };
-
-        return res
-            .status(201)
-            .json({ message: 'Usuário criado com sucesso.', data: user });
+        return res.status(201).json({
+            message: 'Usuário criado com sucesso.',
+            data: {
+                id: docRef.id,
+                name,
+                email,
+                photoURL,
+            },
+        });
     }
 
     async login(req: Request, res: Response) {
@@ -154,7 +159,7 @@ export class UserController {
     }
 
     public async logout(_req: Request, res: Response) {
-        console.log('entrei')
+        console.log('entrei');
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
 
