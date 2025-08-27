@@ -1,4 +1,4 @@
-import { IProps } from '../types';
+import { IProps } from '../../types';
 
 export function RegisterSVG({ className }: IProps) {
     return (
@@ -144,42 +144,14 @@ export function RegisterSVG({ className }: IProps) {
                     y2="181.53"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop
-                        offset="0.02"
-                        stopColor="white"
-                        stop-opacity="0.05"
-                    />
-                    <stop
-                        offset="0.03"
-                        stopColor="white"
-                        stop-opacity="0.16"
-                    />
-                    <stop
-                        offset="0.04"
-                        stopColor="white"
-                        stop-opacity="0.24"
-                    />
-                    <stop
-                        offset="0.06"
-                        stopColor="white"
-                        stop-opacity="0.31"
-                    />
-                    <stop
-                        offset="0.07"
-                        stopColor="white"
-                        stop-opacity="0.36"
-                    />
-                    <stop offset="0.1" stopColor="white" stop-opacity="0.38" />
-                    <stop
-                        offset="0.16"
-                        stopColor="white"
-                        stop-opacity="0.39"
-                    />
-                    <stop
-                        offset="0.84"
-                        stopColor="white"
-                        stop-opacity="0.68"
-                    />
+                    <stop offset="0.02" stopColor="white" stopOpacity="0.05" />
+                    <stop offset="0.03" stopColor="white" stopOpacity="0.16" />
+                    <stop offset="0.04" stopColor="white" stopOpacity="0.24" />
+                    <stop offset="0.06" stopColor="white" stopOpacity="0.31" />
+                    <stop offset="0.07" stopColor="white" stopOpacity="0.36" />
+                    <stop offset="0.1" stopColor="white" stopOpacity="0.38" />
+                    <stop offset="0.16" stopColor="white" stopOpacity="0.39" />
+                    <stop offset="0.84" stopColor="white" stopOpacity="0.68" />
                     <stop offset="1" stopColor="white" />
                 </linearGradient>
                 <linearGradient
@@ -190,42 +162,14 @@ export function RegisterSVG({ className }: IProps) {
                     y2="293.07"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop
-                        offset="0.02"
-                        stopColor="white"
-                        stop-opacity="0.05"
-                    />
-                    <stop
-                        offset="0.03"
-                        stopColor="white"
-                        stop-opacity="0.16"
-                    />
-                    <stop
-                        offset="0.04"
-                        stopColor="white"
-                        stop-opacity="0.24"
-                    />
-                    <stop
-                        offset="0.06"
-                        stopColor="white"
-                        stop-opacity="0.31"
-                    />
-                    <stop
-                        offset="0.07"
-                        stopColor="white"
-                        stop-opacity="0.36"
-                    />
-                    <stop offset="0.1" stopColor="white" stop-opacity="0.38" />
-                    <stop
-                        offset="0.16"
-                        stopColor="white"
-                        stop-opacity="0.39"
-                    />
-                    <stop
-                        offset="0.84"
-                        stopColor="white"
-                        stop-opacity="0.68"
-                    />
+                    <stop offset="0.02" stopColor="white" stopOpacity="0.05" />
+                    <stop offset="0.03" stopColor="white" stopOpacity="0.16" />
+                    <stop offset="0.04" stopColor="white" stopOpacity="0.24" />
+                    <stop offset="0.06" stopColor="white" stopOpacity="0.31" />
+                    <stop offset="0.07" stopColor="white" stopOpacity="0.36" />
+                    <stop offset="0.1" stopColor="white" stopOpacity="0.38" />
+                    <stop offset="0.16" stopColor="white" stopOpacity="0.39" />
+                    <stop offset="0.84" stopColor="white" stopOpacity="0.68" />
                     <stop offset="1" stopColor="white" />
                 </linearGradient>
                 <linearGradient
@@ -237,9 +181,9 @@ export function RegisterSVG({ className }: IProps) {
                     gradientUnits="userSpaceOnUse"
                 >
                     <stop />
-                    <stop offset="0.23" stop-opacity="0.11" />
-                    <stop offset="0.32" stop-opacity="0.08" />
-                    <stop offset="1" stop-opacity="0" />
+                    <stop offset="0.23" stopOpacity="0.11" />
+                    <stop offset="0.32" stopOpacity="0.08" />
+                    <stop offset="1" stopOpacity="0" />
                 </linearGradient>
                 <linearGradient
                     id="paint3_linear_4_405"
@@ -250,9 +194,9 @@ export function RegisterSVG({ className }: IProps) {
                     gradientUnits="userSpaceOnUse"
                 >
                     <stop />
-                    <stop offset="0.54" stop-opacity="0.11" />
-                    <stop offset="0.6" stop-opacity="0.08" />
-                    <stop offset="1" stop-opacity="0" />
+                    <stop offset="0.54" stopOpacity="0.11" />
+                    <stop offset="0.6" stopOpacity="0.08" />
+                    <stop offset="1" stopOpacity="0" />
                 </linearGradient>
                 <linearGradient
                     id="paint4_linear_4_405"
@@ -262,7 +206,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="357.16"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -273,7 +217,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="416.44"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -285,9 +229,9 @@ export function RegisterSVG({ className }: IProps) {
                     gradientUnits="userSpaceOnUse"
                 >
                     <stop />
-                    <stop offset="0.54" stop-opacity="0.11" />
-                    <stop offset="0.6" stop-opacity="0.08" />
-                    <stop offset="1" stop-opacity="0" />
+                    <stop offset="0.54" stopOpacity="0.11" />
+                    <stop offset="0.6" stopOpacity="0.08" />
+                    <stop offset="1" stopOpacity="0" />
                 </linearGradient>
                 <linearGradient
                     id="paint7_linear_4_405"
@@ -298,9 +242,9 @@ export function RegisterSVG({ className }: IProps) {
                     gradientUnits="userSpaceOnUse"
                 >
                     <stop />
-                    <stop offset="0.54" stop-opacity="0.11" />
-                    <stop offset="0.6" stop-opacity="0.08" />
-                    <stop offset="1" stop-opacity="0" />
+                    <stop offset="0.54" stopOpacity="0.11" />
+                    <stop offset="0.6" stopOpacity="0.08" />
+                    <stop offset="1" stopOpacity="0" />
                 </linearGradient>
                 <linearGradient
                     id="paint8_linear_4_405"
@@ -310,7 +254,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="257.55"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -321,7 +265,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="323"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -332,7 +276,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="237.18"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -343,7 +287,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="156.53"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -354,7 +298,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="310.17"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -365,7 +309,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="256.01"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
                 <linearGradient
@@ -376,7 +320,7 @@ export function RegisterSVG({ className }: IProps) {
                     y2="249.49"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stopColor="#231F20" stop-opacity="0" />
+                    <stop stopColor="#231F20" stopOpacity="0" />
                     <stop offset="1" stopColor="#231F20" />
                 </linearGradient>
             </defs>

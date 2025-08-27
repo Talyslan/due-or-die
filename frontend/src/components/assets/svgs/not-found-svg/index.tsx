@@ -1,4 +1,4 @@
-import { IProps } from "../types";
+import { IProps } from '../../types';
 
 export function NotFoundSVG({ className }: IProps) {
     return (

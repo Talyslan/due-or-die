@@ -1,12 +1,15 @@
-export function ProfileIcon() {
+import { IProps } from '../../types';
+
+export function ProfileIcon({ className }: IProps) {
     return (
         <svg
-            width="21"
-            height="22"
+            width="48"
+            height="48"
             viewBox="0 0 21 22"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
+            className={className}
         >
             <mask
                 id="mask0_18_188"
