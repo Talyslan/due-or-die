@@ -1,4 +1,4 @@
-import { Task } from '../../types';
+import { Task, TaskWithTaskList } from '../../types';
 
 export interface IFindTaskByIdDTO {
     taskId: string;
@@ -18,7 +18,7 @@ export interface IFindTasksByTaskListDTO {
 }
 
 export interface ITaskRepository {
-    findAll(): Promise<Task[] | null>;
+    findAll(): Promise<TaskWithTaskList[] | null>;
     findById(data: IFindTaskByIdDTO): Promise<Task | null>;
     create(data: Task): Promise<Task>;
     findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null>;

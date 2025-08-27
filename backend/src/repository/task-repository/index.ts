@@ -12,7 +12,7 @@ import {
     where,
 } from 'firebase/firestore';
 import { database } from '../../config/firebase';
-import { Task } from '../../types';
+import { Task, TaskList, TaskWithTaskList } from '../../types';
 import { BadRequest, NotFoundError } from '../../helpers/errors';
 import {
     IDeleteTaskByIdDTO,
@@ -21,35 +21,57 @@ import {
     IFindTasksByTaskListDTO,
     ITaskRepository,
 } from './type';
+import { ITaskListRepository } from '../task-list-repository/type';
 
 export class TaskRepository implements ITaskRepository {
     private readonly collection: CollectionReference;
     private readonly database: Firestore;
     private readonly collectionName: string;
 
-    constructor() {
+    constructor(private readonly taskListRepository: ITaskListRepository) {
         this.database = database;
         this.collectionName = 'tasks';
         this.collection = collection(this.database, this.collectionName);
     }
 
-    async findAll(): Promise<Task[] | null> {
+    async findAll(): Promise<TaskWithTaskList[]> {
         const snapshot = await getDocs(this.collection);
 
         if (snapshot.empty) return [];
 
-        const tasks = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                description: data.description,
-                status: data.status,
-                priority: data.priority,
-                taskListId: data.taskListId,
-                userId: data.userId,
-            };
-        });
+        const tasks = await Promise.all(
+            snapshot.docs.map(async doc => {
+                const data = doc.data();
+                console.log(data);
+
+                let taskList = null;
+
+                if (data.taskListId) {
+                    try {
+                        taskList = await this.taskListRepository.findById({
+                            taskListId: data.taskListId,
+                        });
+                    } catch (err) {
+                        console.warn(
+                            `TaskList ${data.taskListId} não encontrada:`,
+                            err,
+                        );
+                        taskList = null;
+                    }
+                }
+
+                return {
+                    id: doc.id,
+                    title: data.title,
+                    description: data.description,
+                    status: data.status,
+                    priority: data.priority,
+                    taskListId: data.taskListId ?? null,
+                    taskList: taskList ?? undefined,
+                    userId: data.userId,
+                } as TaskWithTaskList;
+            }),
+        );
 
         return tasks;
     }

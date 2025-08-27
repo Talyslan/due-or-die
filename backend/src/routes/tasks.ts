@@ -2,9 +2,11 @@ import { Request, Response, Router } from 'express';
 import { wrapRouter } from '../helpers/catch-errors';
 import { TaskRepository } from '../repository/task-repository';
 import { TaskController } from '../controller/task-controller';
+import { TaskListRepository } from '../repository/task-list-repository';
 
 const router = wrapRouter(Router());
-const repository = new TaskRepository();
+const taskListRepository = new TaskListRepository();
+const repository = new TaskRepository(taskListRepository);
 const controller = new TaskController(repository);
 
 router.get('/', (req: Request, res: Response) => controller.findAll(req, res));

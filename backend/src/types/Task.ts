@@ -1,3 +1,5 @@
+import { TaskList } from "./TaskList";
+
 export interface Task {
     id: string;
     title: string;
@@ -6,4 +8,8 @@ export interface Task {
     priority: 'low' | 'medium' | 'high';
     taskListId: string;
     userId: string;
+}
+
+export interface TaskWithTaskList extends Task {
+    taskList: TaskList;
 }
