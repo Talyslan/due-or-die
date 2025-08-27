@@ -1,4 +1,6 @@
-export function LogoutIcon() {
+import { IProps } from '../../types';
+
+export function LogoutIcon({ className }: IProps) {
     return (
         <svg
             width="13"
@@ -7,6 +9,7 @@ export function LogoutIcon() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
+            className={className}
         >
             <mask
                 id="mask0_18_234"

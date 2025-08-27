@@ -151,11 +151,12 @@ export class UserController {
         res.cookie('access_token', newToken, {
             httpOnly: true,
             secure: !isLocal,
+            sameSite: 'none',
             path: '/',
             maxAge: 60 * 5 * 1000,
         });
 
-        res.status(200).json({ message: 'token refreshed' });
+        res.status(200).json({ token: newToken });
     }
 
     public async logout(_req: Request, res: Response) {

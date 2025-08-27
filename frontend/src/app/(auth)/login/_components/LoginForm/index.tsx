@@ -26,7 +26,6 @@ export function LoginForm() {
 
         if (action.success) {
             toast.success(action.message);
-            console.log(action);
             router.push('/simple-list');
         } else {
             toast.error(action.message);

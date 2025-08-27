@@ -3,16 +3,10 @@
 import { IActionResponse } from '@/action/IActionResponse';
 import { fetcher } from '@/services';
 
-interface UserToLogIn {
-    email: string;
-    password: string;
-}
-
-export async function LogIn(data: UserToLogIn): Promise<IActionResponse<void>> {
+export async function Logout(): Promise<IActionResponse<void>> {
     try {
-        const response = await fetcher<{ message: string }>('/users/login', {
+        const response = await fetcher<{ message: string }>('/users/logout', {
             method: 'POST',
-            body: JSON.stringify(data),
         });
 
         return {
@@ -20,6 +14,7 @@ export async function LogIn(data: UserToLogIn): Promise<IActionResponse<void>> {
             message: response.message,
         };
     } catch (err: any) {
+        console.log(err);
         return {
             success: false,
             message: err?.message,

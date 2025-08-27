@@ -10,12 +10,19 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('access_token')?.value;
     const refreshToken = request.cookies.get('refresh_token')?.value;
 
-    if (!token && !refreshToken) {
+    if (
+        (!token || token === 'undefined') &&
+        (!refreshToken || refreshToken === 'undefined')
+    ) {
         request.nextUrl.pathname = '/login';
         return NextResponse.redirect(request.nextUrl);
     }
 
-    if (!token && refreshToken) {
+    if (
+        (!token || token === 'undefined') &&
+        (refreshToken || refreshToken === 'undefined')
+    ) {
+        console.log('entrei');
         const { token: newToken } = await fetcher<{ token: string }>(
             '/users/refresh-token',
             {

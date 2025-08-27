@@ -5,7 +5,7 @@ export async function fetcher<T>(
     config: RequestInit = {},
 ): Promise<T> {
     const fullURL = `${env.NEXT_PUBLIC_API_URL}${url}`;
-    
+
     try {
         const response = await fetch(fullURL, {
             ...config,

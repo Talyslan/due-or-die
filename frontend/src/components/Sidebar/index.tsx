@@ -9,6 +9,8 @@ import {
     SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
     SidebarTrigger,
     useSidebar,
 } from '@/components/ui/sidebar';
@@ -20,9 +22,25 @@ import {
     SimpleListIcon,
 } from '../assets';
 import { MenuItem } from './MenuItem';
+import { Logout } from './action/action-logout';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { Button } from '../ui';
 
 export function AppSidebar() {
     const { state } = useSidebar();
+    const router = useRouter();
+
+    const onLogout = async () => {
+        const action = await Logout();
+
+        if (action.success) {
+            toast.success(action.message);
+            router.push('/');
+        } else {
+            toast.error(action.message);
+        }
+    };
 
     return (
         <Sidebar
@@ -65,9 +83,19 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter className="mb-5">
-                <MenuItem Icon={LogoutIcon} href="/logout">
-                    Sair da conta
-                </MenuItem>
+                <SidebarMenuItem className={state === 'expanded' ? 'ml-5' : ''}>
+                    <SidebarMenuButton asChild>
+                        <Button
+                            className={`bg-transparent border-transparent text-gray-200 hover:bg-main-color-100/20 flex items-center gap-2 rounded-lg border transition-all px-3 py-2`}
+                            onClick={() => onLogout()}
+                        >
+                            <LogoutIcon className="h-5 w-5" />
+                            <span className={`font-bold 'text-gray-200'}`}>
+                                Sair da conta
+                            </span>
+                        </Button>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
             </SidebarFooter>
         </Sidebar>
     );
