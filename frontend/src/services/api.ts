@@ -6,7 +6,6 @@ export async function fetcher<T>(
     config: RequestInit = {},
 ): Promise<T> {
     const fullURL = `${env.NEXT_PUBLIC_API_URL}${url}`;
-
     const headers = await applyCorrectHeaders(config);
 
     try {
@@ -16,13 +15,17 @@ export async function fetcher<T>(
             credentials: 'include',
         });
 
+        const text = await response.text();
+
+        const data = text ? JSON.parse(text) : null;
+
         if (!response.ok) {
-            const error = await response.json();
-            console.log(error);
-            throw new Error(error.message || 'Erro desconhecido');
+            const message =
+                data?.message || response.statusText || 'Erro desconhecido';
+            throw new Error(message);
         }
 
-        return (await response.json()) as T;
+        return data as T;
     } catch (err) {
         console.error('API fetch error:', err);
         throw err;

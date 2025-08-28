@@ -9,6 +9,9 @@ import { RegisterFormData, registerSchema } from './schema';
 import { InputError } from '@/components/InputError';
 import { CreateUser } from './action';
 import { toast } from 'sonner';
+import { fetcher } from '@/services';
+import { LogIn } from '@/app/(auth)/login/_components/LoginForm/action';
+import { useRouter } from 'next/navigation';
 
 export function RegisterForm() {
     const {
@@ -18,14 +21,28 @@ export function RegisterForm() {
     } = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
     });
+    const router = useRouter();
 
     const onSubmit = async (data: RegisterFormData) => {
-        console.log('Form data:', data);
         const action = await CreateUser(data);
-        console.log(action);
 
-        if (action.success) toast.success(action.message);
-        else toast.error(action.message);
+        if (action.success) {
+            toast.success(action.message);
+            const result = await LogIn(data);
+
+            await fetcher('/tasks-lists/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: 'Pessoal',
+                    userId: result.data?.data.id,
+                }),
+            });
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            result.success && router.push('/simple-list');
+        } else {
+            toast.error(action.message);
+        }
     };
 
     return (
@@ -66,6 +83,7 @@ export function RegisterForm() {
                         id="password"
                         placeholder="Digite sua senha"
                         className="placeholder:text-gray-100"
+                        type="password"
                         {...register('password')}
                     />
                     <InputError helperText={errors.password?.message} />
@@ -80,6 +98,7 @@ export function RegisterForm() {
                         id="password-confirm"
                         placeholder="Digite sua senha"
                         className="placeholder:text-gray-100"
+                        type="password"
                         {...register('passwordConfirm')}
                     />
                     <InputError helperText={errors.passwordConfirm?.message} />

@@ -2,8 +2,16 @@ import { PencilIcon } from '@/components';
 import { TaskList } from './_components/TaskList';
 import { firstLetterToUpperCase } from '@/utils/first-letter-to-upper-case';
 import { fetcher } from '@/services';
+import { AddTaskForm } from '@/components/AddTaskForm';
 
-export default async function SimpleList() {
+interface Props {
+    searchParams: Promise<any>;
+}
+
+export default async function SimpleList({ searchParams }: Props) {
+    const queryParams = await searchParams;
+    const open = !!queryParams.addTask;
+
     const data = new Date();
     const day = data.getDate();
     const month = firstLetterToUpperCase(
@@ -15,6 +23,8 @@ export default async function SimpleList() {
     const { data: result } = await fetcher<IFetch<Task[]>>(
         `/users/${user.id}/tasks`,
     );
+    const tasks = result.tasks;
+    const taskslists = await fetcher(`/users/${user.id}/tasks-lists`);
 
     return (
         <div className="flex justify-between gap-10 h-full">
@@ -24,15 +34,22 @@ export default async function SimpleList() {
                     Hoje, {day} de {month} de {year}
                 </h2>
 
-                <TaskList tasks={result.tasks} />
+                <TaskList tasks={tasks} />
             </div>
 
-            <div className="w-full h-full flex flex-col justify-center items-center bg-main-color-100/10 shadow-lg gap-2">
-                <PencilIcon className="text-gray-100" />
-                <h3 className="text-gray-100 text-center font-bold text-2xl">
-                    Clique em uma tarefa <br /> para abri-la
-                </h3>
-            </div>
+            {open ? (
+                <AddTaskForm
+                    tasksLists={taskslists.data.tasksLists}
+                    userId={user.id}
+                />
+            ) : (
+                <div className="w-full h-full flex flex-col justify-center items-center bg-main-color-100/10 shadow-lg gap-2">
+                    <PencilIcon className="text-gray-100" />
+                    <h3 className="text-gray-100 text-center font-bold text-2xl">
+                        Clique em uma tarefa <br /> para abri-la
+                    </h3>
+                </div>
+            )}
         </div>
     );
 }

@@ -1,19 +1,13 @@
-'use server';
+'use client';
 
 import { IActionResponse } from '@/action/IActionResponse';
 import { fetcher } from '@/services';
 
-interface UserToCreate {
-    name: string;
-    email: string;
-    password: string;
-}
-
-export async function CreateUser(
-    data: UserToCreate,
-): Promise<IActionResponse<User>> {
+export async function CreateTask(
+    data: Omit<Task, 'id'>,
+): Promise<IActionResponse<Task>> {
     try {
-        const response = await fetcher<{ message: string }>('/users/', {
+        const response = await fetcher<{ message: string }>('/tasks/', {
             method: 'POST',
             body: JSON.stringify(data),
         });
@@ -25,7 +19,7 @@ export async function CreateUser(
     } catch (err: any) {
         return {
             success: false,
-            message: err?.message || 'Erro ao criar usuário',
+            message: err?.message,
         };
     }
 }

@@ -71,8 +71,6 @@ export class UserRepository implements IUserRepository {
                 'Nenhum usuário com esse identificado encontrado.',
             );
 
-        console.log(snapshot.data());
-
         return snapshot.data() as User;
     }
 

@@ -30,12 +30,12 @@ export class TaskListController {
             if (!req.body?.[field]) missingFields.push(field);
         });
 
+        console.log(req.body);
         if (missingFields.length > 0) {
             throw new BadRequest(
                 `Campos obrigatórios ausentes: ${missingFields.join(', ')}`,
             );
         }
-
         const taskList = await this.repository.create(req.body);
 
         return res.status(201).json({

@@ -62,6 +62,7 @@ export function LoginForm() {
                         id="password"
                         placeholder="Digite sua senha"
                         className="placeholder:text-gray-100"
+                        type="password"
                         {...register('password')}
                     />
                     <InputError helperText={errors.password?.message} />
