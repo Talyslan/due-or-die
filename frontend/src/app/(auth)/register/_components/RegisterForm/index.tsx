@@ -12,8 +12,12 @@ import { toast } from 'sonner';
 import { fetcher } from '@/services';
 import { LogIn } from '@/app/(auth)/login/_components/LoginForm/action';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { PasswordVisualization } from '@/components/PasswordVisualization';
 
 export function RegisterForm() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const {
         register,
         handleSubmit,
@@ -79,14 +83,20 @@ export function RegisterForm() {
 
                 <label htmlFor="password" className="flex flex-col gap-1">
                     <span className="font-bold">Senha</span>
-                    <Input
-                        id="password"
-                        placeholder="Digite sua senha"
-                        className="placeholder:text-gray-100"
-                        type="password"
-                        {...register('password')}
-                    />
-                    <InputError helperText={errors.password?.message} />
+                    <div className="relative w-full">
+                        <Input
+                            id="password"
+                            placeholder="Digite sua senha"
+                            className="placeholder:text-gray-100"
+                            type={showPassword ? 'text' : 'password'}
+                            {...register('password')}
+                        />
+                        <PasswordVisualization
+                            showPassword={showPassword}
+                            setShowPassword={setShowPassword}
+                        />
+                        <InputError helperText={errors.password?.message} />
+                    </div>
                 </label>
 
                 <label
@@ -94,14 +104,22 @@ export function RegisterForm() {
                     className="flex flex-col gap-1"
                 >
                     <span className="font-bold">Confirme sua senha</span>
-                    <Input
-                        id="password-confirm"
-                        placeholder="Digite sua senha"
-                        className="placeholder:text-gray-100"
-                        type="password"
-                        {...register('passwordConfirm')}
-                    />
-                    <InputError helperText={errors.passwordConfirm?.message} />
+                    <div className="relative w-full">
+                        <Input
+                            id="password-confirm"
+                            placeholder="Digite sua senha"
+                            className="placeholder:text-gray-100"
+                            type={showPasswordConfirm ? 'text' : 'password'}
+                            {...register('passwordConfirm')}
+                        />
+                        <PasswordVisualization
+                            showPassword={showPasswordConfirm}
+                            setShowPassword={setShowPasswordConfirm}
+                        />
+                        <InputError
+                            helperText={errors.passwordConfirm?.message}
+                        />
+                    </div>
                 </label>
             </div>
 

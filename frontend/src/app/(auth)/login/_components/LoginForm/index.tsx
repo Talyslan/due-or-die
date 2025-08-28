@@ -11,11 +11,13 @@ import { toast } from 'sonner';
 import { LoginFormData, loginSchema } from './schema';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth';
+import { PasswordVisualization } from '@/components/PasswordVisualization';
+import { useState } from 'react';
 
 export function LoginForm() {
     const router = useRouter();
     const { setUser } = useAuth();
-
+    const [showPassword, setShowPassword] = useState(false);
     const {
         register,
         handleSubmit,
@@ -58,14 +60,21 @@ export function LoginForm() {
                 </label>
                 <label htmlFor="password" className="flex flex-col gap-1">
                     <span className="font-bold">Senha</span>
-                    <Input
-                        id="password"
-                        placeholder="Digite sua senha"
-                        className="placeholder:text-gray-100"
-                        type="password"
-                        {...register('password')}
-                    />
-                    <InputError helperText={errors.password?.message} />
+                    <div className="relative w-full">
+                        <Input
+                            id="password"
+                            placeholder="Digite sua senha"
+                            type={showPassword ? 'text' : 'password'}
+                            className="placeholder:text-gray-100"
+                            {...register('password')}
+                        />
+                        <PasswordVisualization
+                            setShowPassword={setShowPassword}
+                            showPassword={showPassword}
+                        />
+
+                        <InputError helperText={errors.password?.message} />
+                    </div>
                 </label>
             </div>
 
