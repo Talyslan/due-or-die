@@ -1,5 +1,6 @@
 import { env } from '@/env';
 import { applyCorrectHeaders } from '@/utils/apply-correct-headers';
+import { redirect } from 'next/navigation';
 
 export async function fetcher<T>(
     url: string,
@@ -16,7 +17,6 @@ export async function fetcher<T>(
         });
 
         const text = await response.text();
-
         const data = text ? JSON.parse(text) : null;
 
         if (!response.ok) {
@@ -26,7 +26,18 @@ export async function fetcher<T>(
         }
 
         return data as T;
-    } catch (err) {
+    } catch (err: any) {
+        if (
+            err.message.includes('Token expirado') ||
+            err.message.includes('Não autorizado')
+        ) {
+            if (typeof window !== 'undefined') {
+                window.location.href = '/login';
+            } else {
+                redirect('/login');
+            }
+        }
+
         console.error('API fetch error:', err);
         throw err;
     }

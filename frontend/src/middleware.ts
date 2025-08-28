@@ -20,9 +20,9 @@ export async function middleware(request: NextRequest) {
 
     if (
         (!token || token === 'undefined') &&
-        (refreshToken || refreshToken === 'undefined')
+        refreshToken &&
+        refreshToken !== 'undefined'
     ) {
-        console.log('entrei');
         const { token: newToken } = await fetcher<{ token: string }>(
             '/users/refresh-token',
             {
@@ -32,6 +32,11 @@ export async function middleware(request: NextRequest) {
                 },
             },
         );
+
+        if (!newToken) {
+            request.nextUrl.pathname = '/login';
+            return NextResponse.redirect(request.nextUrl);
+        }
 
         const cookies = extractAndParseCookies(
             `access_token=${newToken}; Path=/; HttpOnly`,
