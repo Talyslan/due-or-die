@@ -8,10 +8,10 @@ O objetivo é desenvolver uma aplicação **To-Do List** com autenticação de u
 - Autenticação de usuários (login, cadastro, logout).
 - Sessões persistentes (usuário continua logado ao recarregar a página).
 - CRUD de tarefas:
-  - Criar novas tarefas.
-  - Visualizar apenas as tarefas do usuário autenticado.
-  - Atualizar (editar título, marcar como concluída/pendente).
-  - Excluir tarefas.
+    - Criar novas tarefas.
+    - Visualizar apenas as tarefas do usuário autenticado.
+    - Atualizar (editar título, marcar como concluída/pendente).
+    - Excluir tarefas.
 - Atualização em tempo real (Firebase).
 - Design responsivo (desktop e mobile).
 
@@ -29,6 +29,11 @@ O objetivo é desenvolver uma aplicação **To-Do List** com autenticação de u
 - [TypeScript](https://www.typescriptlang.org/)
 - [Firebase Authentication](https://firebase.google.com/docs/auth) (autenticação)
 - [Cloud Firestore](https://firebase.google.com/docs/firestore) (armazenamento de tarefas)
+
+### Design
+
+- Figma
+  Para acessar e visualizar o design do projeto, [CLIQUE AQUI](https://www.figma.com/design/sTIQsAjaXGZNTzLZ0arjRy/Due-or-Die-%7C-Desafio-Sootz--Itnsify?node-id=4-15&t=xs1KJ6B7jwsoNuBK-1)
 
 ## 📂 Estrutura do Projeto
 
