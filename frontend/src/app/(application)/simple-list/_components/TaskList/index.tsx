@@ -1,28 +1,38 @@
 'use client';
 
 import { Input, CustomLink, PlusIcon } from '@/components';
+import { UpdateTask } from '@/components/EditTaskForm/action';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/utils/data';
 import { CircleChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import { priorityColors, statusColors } from './priority-and-status-colors';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     tasks: Task[];
 }
 
-const statusColors: Record<TaskStatus, string> = {
-    'to-do': 'bg-gray-100 text-gray-600',
-    doing: 'bg-blue-100 text-blue-600',
-    done: 'bg-green-100 text-green-600',
-};
-
-const priorityColors: Record<TaskPriority, string> = {
-    low: 'bg-green-100 text-green-600',
-    medium: 'bg-yellow-100 text-yellow-600',
-    high: 'bg-red-100 text-red-600',
-};
-
 export function TaskList({ tasks }: IProps) {
+    const router = useRouter();
+    const handleTaskStatus = async (
+        { target }: React.ChangeEvent<HTMLInputElement>,
+        task: Task,
+    ) => {
+        const taskStatus = target.checked ? 'done' : 'to-do';
+        task['status'] = taskStatus;
+
+        const action = await UpdateTask(task);
+
+        if (action.success) {
+            toast.success(action.message);
+            router.refresh();
+        } else {
+            toast.error(action.message);
+        }
+    };
+
     return (
         <div className="flex flex-col items-center">
             <CustomLink
@@ -47,6 +57,8 @@ export function TaskList({ tasks }: IProps) {
                                 <label
                                     htmlFor={`${task.id}`}
                                     className="flex items-center gap-3 cursor-pointer"
+                                    onClick={e => e.stopPropagation()}
+                                    onChange={e => handleTaskStatus(e, task)}
                                 >
                                     <Input
                                         type="checkbox"

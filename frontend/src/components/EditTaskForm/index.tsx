@@ -15,7 +15,7 @@ import {
     SelectValue,
 } from '../ui/select';
 import { useRouter } from 'next/navigation';
-import { CreateTask, DeleteTask, UpdateTask } from './action';
+import { DeleteTask, UpdateTask } from './action';
 import { toast } from 'sonner';
 
 interface Props {
