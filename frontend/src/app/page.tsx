@@ -1,8 +1,8 @@
-import { Link } from '@/components';
+import { CustomLink } from '@/components';
 import { Header } from '@/components/Header';
 
 export default function Home() {
-    return (
+    return ( 
         <>
             <Header />
 
@@ -25,9 +25,9 @@ export default function Home() {
                     </h3>
                 </div>
 
-                <Link href="/simple-list" className="text-xl">
+                <CustomLink href="/simple-list" className="text-xl">
                     Comece agora!
-                </Link>
+                </CustomLink>
             </main>
         </>
     );

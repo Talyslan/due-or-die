@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { cn } from '@/lib/utils'; // se estiver usando shadcn/ui
+import { cn } from '@/lib/utils';
 
 type AppLinkProps = {
     href: string;
@@ -7,7 +7,7 @@ type AppLinkProps = {
     className?: string;
 };
 
-export function Link({ href, children, className }: AppLinkProps) {
+export function CustomLink({ href, children, className }: AppLinkProps) {
     return (
         <NextLink
             href={href}

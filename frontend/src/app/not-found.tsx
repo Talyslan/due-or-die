@@ -1,4 +1,4 @@
-import { NotFoundSVG, Link } from '@/components';
+import { NotFoundSVG, CustomLink } from '@/components';
 
 export default function NotFound() {
     return (
@@ -7,7 +7,7 @@ export default function NotFound() {
             <div role="status" className="flex flex-col items-center gap-3">
                 <NotFoundSVG className="transform scale-75" />
             </div>
-            <Link href={'/'}>Voltar ao início</Link>
+            <CustomLink href={'/'}>Voltar ao início</CustomLink>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, Link as CustomLink, PlusIcon } from '@/components';
+import { Input, CustomLink, PlusIcon } from '@/components';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/utils/data';
 import { CircleChevronRight } from 'lucide-react';

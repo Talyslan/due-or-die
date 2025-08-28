@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, ErrorSVG, Link } from '@/components';
+import { Button, ErrorSVG, CustomLink } from '@/components';
 
 export default function Error({
     error,
@@ -15,11 +15,11 @@ export default function Error({
 
             <ErrorSVG />
 
-            <p>Erro: {error.message}</p>
+            <p className='max-w-1/2'>Erro: {error.message}</p>
 
             <div className="flex flex-col gap-2 mt-10">
                 <Button onClick={() => reset()}>Tente novamente</Button>
-                <Link href={'/'}>Voltar ao início</Link>
+                <CustomLink href={'/'}>Voltar ao início</CustomLink>
             </div>
         </main>
     );

@@ -1,4 +1,4 @@
-import { Button, Link, ListIcon, StatusIcon } from '@/components';
+import { Button, CustomLink, ListIcon, StatusIcon } from '@/components';
 import { fetcher } from '@/services';
 import { firstLetterToUpperCase } from '@/utils';
 import { TaskList } from '../_components/TaskList';
@@ -79,12 +79,12 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
                     </div>
 
                     <div className="flex w-full gap-2">
-                        <Link
+                        <CustomLink
                             className="rounded-lg"
                             href={`/simple-list/${taskId}?editTask=true`}
                         >
                             Editar
-                        </Link>
+                        </CustomLink>
                     </div>
                 </div>
             )}
