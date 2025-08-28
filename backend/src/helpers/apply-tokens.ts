@@ -21,6 +21,6 @@ export function applyTokenCookies(
         httpOnly: true,
         secure: !isLocal,
         path: '/',
-        maxAge: 60 * 5 * 1000,
+        maxAge: 60 * 15 * 1000,
     });
 }

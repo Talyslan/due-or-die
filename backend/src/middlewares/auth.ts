@@ -24,7 +24,9 @@ export const authMiddleware = () => {
             const userId = verifyToken(token);
 
             if (!userId)
-                throw new UnauthorizedError('Não autorizado: Token inválido!');
+                throw new UnauthorizedError(
+                    'Não autorizado: Token expirado ou inválido!',
+                );
 
             const searchedUser = await repository.findById({ userId });
 
