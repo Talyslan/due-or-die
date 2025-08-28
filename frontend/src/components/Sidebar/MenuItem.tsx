@@ -15,7 +15,7 @@ export function MenuItem({ children, href, Icon }: IProps) {
     const { state } = useSidebar();
     const pathname = usePathname();
 
-    const isActive = pathname === href;
+    const isActive = pathname.includes(href);
 
     return (
         <SidebarMenuItem className={state === 'expanded' ? 'ml-5' : ''}>

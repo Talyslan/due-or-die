@@ -1,4 +1,4 @@
-import { Button, CustomLink, ListIcon, StatusIcon } from '@/components';
+import { CustomLink, ListIcon, StatusIcon } from '@/components';
 import { fetcher } from '@/services';
 import { firstLetterToUpperCase } from '@/utils';
 import { TaskList } from '../_components/TaskList';
@@ -58,7 +58,7 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
                         <hr className="border-t-2 border-gray-100/30" />
 
                         <div className="flex-1 w-full overflow-auto">
-                            <p className="break-words w-1/3">
+                            <p className="break-words text-justify">
                                 {task.description}
                             </p>
                         </div>
