@@ -35,7 +35,7 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
 
     return (
         <div className="flex justify-between gap-10 h-full">
-            <div className="w-1/2 flex flex-col gap-5 pl-10 pt-10">
+            <div className="lg:flex hidden w-1/2 flex-col gap-5 pl-10 pt-10">
                 <h1 className="font-bold text-gray-200">Lista Simples</h1>
                 <h2 className="text-main-color-200 font-bold text-4xl">
                     Hoje, {day} de {month} de {year}
@@ -47,7 +47,7 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
             {edit ? (
                 <EditTaskForm task={task} userId={user.id} />
             ) : (
-                <div className="w-1/2 h-full flex flex-col justify-between bg-main-color-100/10 shadow-lg gap-2 p-10">
+                <div className="lg:w-1/2 w-full h-full flex flex-col justify-between bg-main-color-100/10 shadow-lg gap-2 p-10">
                     <div className="flex flex-col gap-5 flex-1 overflow-hidden">
                         <div className="flex flex-col items-start gap-2">
                             <span className="font-black text-gray-200 text-xl">
@@ -79,6 +79,12 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
                     </div>
 
                     <div className="flex w-full gap-2">
+                        <CustomLink
+                            className="rounded-lg lg:hidden block"
+                            href={`/simple-list/`}
+                        >
+                            Voltar
+                        </CustomLink>
                         <CustomLink
                             className="rounded-lg"
                             href={`/simple-list/${taskId}?editTask=true`}

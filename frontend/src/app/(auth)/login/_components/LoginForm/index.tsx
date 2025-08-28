@@ -39,7 +39,7 @@ export function LoginForm() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white-200 w-1/2 flex flex-col items-center justify-center gap-10"
+            className="bg-white-200 sm:w-1/2 w-full px-12 flex flex-col items-center justify-center gap-10"
         >
             <h1 className="font-bold text-7xl">Login</h1>
 

@@ -2,7 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, ListIcon, StatusIcon } from '@/components';
+import { Button, CustomLink, Input, ListIcon, StatusIcon } from '@/components';
 import { InputError } from '@/components/InputError';
 import { AddTaskFormData, addTaskSchema } from './schema';
 import {
@@ -74,7 +74,7 @@ export function EditTaskForm({ task, userId }: Props) {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full h-full flex flex-col justify-between bg-main-color-100/10 shadow-lg gap-2 p-10"
+            className="lg:w-1/2 w-full h-full flex flex-col justify-between bg-main-color-100/10 shadow-lg gap-2 p-10"
         >
             <div className="flex flex-col gap-5">
                 <div className="flex flex-col items-start gap-2">
@@ -179,6 +179,12 @@ export function EditTaskForm({ task, userId }: Props) {
             </div>
 
             <div className="flex w-full gap-2">
+                <CustomLink
+                    className="rounded-lg lg:hidden block"
+                    href={`/simple-list/${task.id}`}
+                >
+                    Voltar
+                </CustomLink>
                 <Button
                     onClick={() => onDelete(task.id)}
                     type="button"

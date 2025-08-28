@@ -13,7 +13,7 @@ export function GoogleLogin() {
                 />
             </div>
 
-            <span className="text-white-100 font-bold px-4">
+            <span className="text-white-100 font-bold px-4 text-sm">
                 Entrar com Google
             </span>
         </div>

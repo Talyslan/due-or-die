@@ -28,7 +28,7 @@ export default async function SimpleList({ searchParams }: Props) {
 
     return (
         <div className="flex justify-between gap-10 h-full">
-            <div className="flex flex-col gap-5 pl-10 pt-10 w-full">
+            <div className="flex flex-col gap-5 px-10 pt-10 w-full">
                 <h1 className="font-bold text-gray-200">Lista Simples</h1>
                 <h2 className="text-main-color-200 font-bold text-4xl">
                     Hoje, {day} de {month} de {year}
@@ -43,7 +43,7 @@ export default async function SimpleList({ searchParams }: Props) {
                     userId={user.id}
                 />
             ) : (
-                <div className="w-full h-full flex flex-col justify-center items-center bg-main-color-100/10 shadow-lg gap-2">
+                <div className="hidden lg:flex w-full h-full flex-col justify-center items-center bg-main-color-100/10 shadow-lg gap-2">
                     <PencilIcon className="text-gray-100" />
                     <h3 className="text-gray-100 text-center font-bold text-2xl">
                         Clique em uma tarefa <br /> para abri-la
