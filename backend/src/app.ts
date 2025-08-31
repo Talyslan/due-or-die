@@ -6,6 +6,8 @@ import { ErrorHandler } from './middlewares/error-handler';
 import { taskRouter } from './routes/tasks';
 import { taskListRouter } from './routes/task-lists';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger';
 class App {
     public express: Express;
 
@@ -36,6 +38,12 @@ class App {
         this.express.use('/users', userRouter);
         this.express.use('/tasks', taskRouter);
         this.express.use('/tasks-lists', taskListRouter);
+
+        this.express.use(
+            '/docs',
+            swaggerUi.serve,
+            swaggerUi.setup(swaggerSpec),
+        );
     }
 
     private errorHandlers() {
