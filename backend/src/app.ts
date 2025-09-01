@@ -1,13 +1,12 @@
 import express, { type Express, Request, Response } from 'express';
-import cors from 'cors';
-import { env } from './env';
-import { userRouter } from './routes/users';
-import { ErrorHandler } from './middlewares/error-handler';
-import { taskRouter } from './routes/tasks';
-import { taskListRouter } from './routes/task-lists';
-import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec } from './config/swagger';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { userRouter, taskRouter, taskListRouter } from './routes';
+import { ErrorHandler } from './middlewares';
+import { swaggerSpec } from './config';
+import { env } from './env';
+
 class App {
     public express: Express;
 

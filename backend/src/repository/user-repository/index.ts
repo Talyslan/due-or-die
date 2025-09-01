@@ -1,3 +1,9 @@
+import {
+    CollectionReference,
+    Firestore,
+    Timestamp,
+} from 'firebase-admin/firestore';
+import { database } from '../../config';
 import { User } from '../../types';
 import {
     ICreateUserDTO,
@@ -9,13 +15,7 @@ import {
     IUpdateUserDTO,
     IUserRepository,
 } from './type';
-import { NotFoundError } from '../../helpers/errors';
-import {
-    CollectionReference,
-    Firestore,
-    Timestamp,
-} from 'firebase-admin/firestore';
-import { database } from '../../config/firebase-admin';
+import { NotFoundError } from '../../helpers';
 import { ITaskRepository } from '../task-repository/type';
 import { ITaskListRepository } from '../task-list-repository/type';
 

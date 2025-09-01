@@ -1,14 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
-import { UnauthorizedError } from '../helpers/errors';
-import { UserRepository } from '../repository/user-repository';
-import { TaskRepository } from '../repository/task-repository';
-import { TaskListRepository } from '../repository/task-list-repository';
-import { auth } from '../config/firebase-admin';
+import { UnauthorizedError } from '../helpers';
+import {
+    UserRepository,
+    TaskRepository,
+    TaskListRepository,
+} from '../repository';
+import { auth } from '../config';
 
 export const authMiddleware = () => {
     const taskListRepository = new TaskListRepository();
-    const taskRepository = new TaskRepository(taskListRepository);
+    const taskRepository = new TaskRepository();
     const repository = new UserRepository(taskRepository, taskListRepository);
 
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -29,7 +30,7 @@ export const authMiddleware = () => {
                     'Não autorizado: Token expirado ou inválido!',
                 );
 
-            const searchedUser = await repository.findById({ userId });
+            const searchedUser = await repository.findById({ uid: userId });
 
             if (!searchedUser)
                 throw new UnauthorizedError(

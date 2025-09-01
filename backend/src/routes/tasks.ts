@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { wrapRouter } from '../helpers/catch-errors';
-import { TaskRepository } from '../repository/task-repository';
-import { TaskController } from '../controller/task-controller';
-import { authMiddleware } from '../middlewares/auth';
+import { TaskController } from '../controller';
+import { TaskRepository } from '../repository';
+import { authMiddleware } from '../middlewares';
+import { wrapRouter } from '../helpers';
 
 const router = wrapRouter(Router());
 const repository = new TaskRepository();

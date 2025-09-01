@@ -1,6 +1,6 @@
 import { database } from '../../config/firebase-admin';
 import { Task, Task_JOIN_TaskList, TaskList } from '../../types';
-import { NotFoundError } from '../../helpers/errors';
+import { NotFoundError } from '../../helpers';
 import {
     ICreateTaskDTO,
     IDeleteTaskDTO,

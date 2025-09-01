@@ -1,10 +1,12 @@
 import { Request, Response, Router } from 'express';
-import { UserController } from '../controller/user-controller';
-import { UserRepository } from '../repository/user-repository';
-import { wrapRouter } from '../helpers/catch-errors';
-import { authMiddleware } from '../middlewares/auth';
-import { TaskListRepository } from '../repository/task-list-repository';
-import { TaskRepository } from '../repository/task-repository';
+import { UserController } from '../controller';
+import { wrapRouter } from '../helpers';
+import { authMiddleware } from '../middlewares';
+import {
+    UserRepository,
+    TaskRepository,
+    TaskListRepository,
+} from '../repository';
 
 const router = wrapRouter(Router());
 
