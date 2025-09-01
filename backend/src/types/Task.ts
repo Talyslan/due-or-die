@@ -1,15 +1,19 @@
-import { TaskList } from "./TaskList";
+import { Timestamp } from 'firebase-admin/firestore';
+import { TaskList } from './TaskList';
 
 export interface Task {
     id: string;
+    userId: string;
     title: string;
-    description: string;
+    description: string | undefined;
     status: 'to-do' | 'doing' | 'done';
     priority: 'low' | 'medium' | 'high';
     taskListId: string;
-    userId: string;
+
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
 }
 
-export interface TaskWithTaskList extends Task {
-    taskList: TaskList;
+export interface Task_JOIN_TaskList extends Omit<Task, 'taskListId'> {
+    taskList: Omit<TaskList, 'userId'> | null;
 }

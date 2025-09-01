@@ -1,14 +1,11 @@
-export interface User {
-    id: string;
-    name: string;
-    email: string;
-    photoURL?: string | undefined;
-}
+import { Timestamp } from "firebase-admin/firestore";
 
-export interface UserWithPassword {
-    id: string;
+export interface User {
+    uid: string;
     name: string;
     email: string;
-    password: string;
-    photoURL?: string | undefined;
+    photoURL: string | undefined;
+
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
 }

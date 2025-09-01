@@ -2,14 +2,14 @@ import { Request, Response, Router } from 'express';
 import { UserController } from '../controller/user-controller';
 import { UserRepository } from '../repository/user-repository';
 import { wrapRouter } from '../helpers/catch-errors';
-import { TaskRepository } from '../repository/task-repository';
-import { TaskListRepository } from '../repository/task-list-repository';
 import { authMiddleware } from '../middlewares/auth';
+import { TaskListRepository } from '../repository/task-list-repository';
+import { TaskRepository } from '../repository/task-repository';
 
 const router = wrapRouter(Router());
 
+const taskRepository = new TaskRepository();
 const taskListRepository = new TaskListRepository();
-const taskRepository = new TaskRepository(taskListRepository);
 
 const repository = new UserRepository(taskRepository, taskListRepository);
 const controller = new UserController(repository);
@@ -19,7 +19,7 @@ router.get('/', authMiddleware(), (req: Request, res: Response) =>
 );
 
 router.get('/me', authMiddleware(), (req: Request, res: Response) => {
-    return res.json({ data: { id: req.user?.id, email: req.user?.email } });
+    return res.status(200).json({ data: req.user });
 });
 
 router.get('/:userId', authMiddleware(), (req: Request, res: Response) =>

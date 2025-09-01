@@ -8,7 +8,6 @@ import {
     verifyRefreshToken,
 } from '../helpers/tokens';
 import { applyTokenCookies } from '../helpers/apply-tokens';
-import bcrypt from 'bcrypt';
 import { env } from '../env';
 
 export class UserController {
@@ -23,11 +22,11 @@ export class UserController {
         const { userId } = req.params;
 
         if (!userId)
-            throw new Error(
+            throw new BadRequest(
                 'Identificador do usuário não fornecido na requisição.',
             );
 
-        const user = await this.repository.findById({ userId });
+        const user = await this.repository.findById({ uid: userId });
 
         return res.status(200).json(user);
     }
@@ -35,7 +34,7 @@ export class UserController {
     async findByEmail(req: Request, res: Response) {
         const { email } = req.params;
 
-        if (!email) throw new Error('Email não fornceido na requisição.');
+        if (!email) throw new BadRequest('Email não fornceido na requisição.');
 
         const user = this.repository.findByEmail({ email });
 
@@ -46,14 +45,13 @@ export class UserController {
         const { userId } = req.params;
 
         if (!userId)
-            throw new Error(
+            throw new BadRequest(
                 'Identificador do usuário não fornecido na requisição.',
             );
 
-        const user = await this.repository.findById({ userId });
-        const tasks = await this.repository.findTasksByOwner({ userId });
+        const tasks = await this.repository.findTasksByOwner({ uid: userId });
 
-        return res.status(200).json({ data: { user, tasks } });
+        return res.status(200).json({ data: tasks });
     }
 
     async findTasksListsByOwner(req: Request, res: Response) {
@@ -64,55 +62,46 @@ export class UserController {
                 'Identificador do usuário não fornecido na requisição.',
             );
 
-        const user = await this.repository.findById({ userId });
-        const tasksLists = await this.repository.findTasksListsByOwner({
-            userId,
+        const tasksLists = await this.repository.findTaskListsByOwner({
+            uid: userId,
         });
 
-        return res.status(200).json({ data: { user, tasksLists } });
+        return res.status(200).json({ data: tasksLists });
     }
 
     async create(req: Request, res: Response) {
-        const { name, email, password, photoURL } = req.body || {};
+        const { uid, name, email, photoURL } = req.body;
 
         if (!name)
-            throw new Error('Nome não fornecido no corpo da requisição.');
-        if (!email) throw new Error('Email não fornecido no corpo requisição.');
-        if (!password)
-            throw new Error('Senha não fornecida no corpo requisição.');
+            throw new BadRequest('Nome não fornecido no corpo da requisição.');
+        if (!email)
+            throw new BadRequest('Email não fornecido no corpo requisição.');
 
         const user = await this.repository.findByEmail({ email });
+
         if (user)
             throw new BadRequest(
                 'Usuário já existe, por favor, entre em sua conta.',
             );
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const docRef = await this.repository.create({
-            name,
-            email,
-            password: hashedPassword,
-            photoURL,
+        const userCreated = await this.repository.create({
+            uid,
+            user: { name, email, photoURL },
         });
 
         return res.status(201).json({
             message: 'Usuário criado com sucesso.',
-            data: {
-                id: docRef.id,
-                name,
-                email,
-                photoURL,
-            },
+            data: userCreated,
         });
     }
 
     async login(req: Request, res: Response) {
-        const { email, password } = req.body;
+        const { email, idTokenGoogle } = req.body;
 
-        if (!email) throw new Error('Email não fornecido no corpo requisição.');
-        if (!password)
-            throw new Error('Senha não fornecida no corpo requisição.');
+        if (!email || !idTokenGoogle)
+            throw new BadRequest(
+                'Email e Token Google Id não fornecidos no corpo requisição.',
+            );
 
         const user = await this.repository.findByEmail({ email });
 
@@ -121,12 +110,8 @@ export class UserController {
                 'Usuário não encontrado. Por favor, crie sua conta.',
             );
 
-        const isValid = await bcrypt.compare(password, user.password);
-
-        if (!isValid) throw new UnauthorizedError('Senha incorreta!');
-
-        const accessToken = createToken(user.id);
-        const refreshToken = createRefreshToken(user.id);
+        const accessToken = createToken(user.uid);
+        const refreshToken = createRefreshToken(user.uid);
 
         applyTokenCookies(res, { accessToken, refreshToken });
 
@@ -168,27 +153,22 @@ export class UserController {
 
     async update(req: Request, res: Response) {
         const { userId } = req.params;
-        const { name, email, photoURL } = req.body || {};
+        const { name, email } = req.body || {};
 
         if (!userId)
-            throw new Error(
+            throw new BadRequest(
                 'Identificador do usuário não fornecido na requisição.',
             );
         if (!name && !email)
-            throw new Error(
+            throw new BadRequest(
                 'Nome e email não fornecido no corpo da requisição.',
             );
         if (!name)
-            throw new Error('Nome não fornecido no corpo da requisição.');
+            throw new BadRequest('Nome não fornecido no corpo da requisição.');
         if (!email)
-            throw new Error('Email não fornecido no corpo da requisição.');
+            throw new BadRequest('Email não fornecido no corpo da requisição.');
 
-        await this.repository.update({
-            userId,
-            name,
-            email,
-            photoURL,
-        });
+        await this.repository.update({ uid: userId, ...req.body });
 
         return res
             .status(204)
@@ -203,7 +183,7 @@ export class UserController {
                 'Identificador do usuário não fornecido na requisição.',
             );
 
-        await this.repository.remove({ userId });
+        await this.repository.remove({ uid: userId });
 
         return res
             .status(204)

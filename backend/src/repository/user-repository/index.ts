@@ -1,160 +1,130 @@
-import {
-    addDoc,
-    collection,
-    CollectionReference,
-    deleteDoc,
-    doc,
-    Firestore,
-    getDoc,
-    getDocs,
-    query,
-    updateDoc,
-    where,
-} from 'firebase/firestore';
-import { database } from '../../config/firebase';
-import { Task, TaskList, User, UserWithPassword } from '../../types';
+import { User } from '../../types';
 import {
     ICreateUserDTO,
     IDeleteUserByIdDTO,
+    IFindTaskListsByUser,
+    IFindTasksByUser,
     IFindUserByEmailDTO,
     IFindUserByIdDTO,
     IUpdateUserDTO,
     IUserRepository,
 } from './type';
-import { BadRequest, NotFoundError } from '../../helpers/errors';
+import { NotFoundError } from '../../helpers/errors';
 import {
-    IFindTasksByOwnerDTO,
-    IFindTasksByTaskListDTO,
-    ITaskRepository,
-} from '../task-repository/type';
+    CollectionReference,
+    Firestore,
+    Timestamp,
+} from 'firebase-admin/firestore';
+import { database } from '../../config/firebase-admin';
+import { ITaskRepository } from '../task-repository/type';
 import { ITaskListRepository } from '../task-list-repository/type';
 
 export class UserRepository implements IUserRepository {
     private readonly collection: CollectionReference;
     private readonly database: Firestore;
-    private readonly collectionName: string;
 
     constructor(
         private readonly taskRepository: ITaskRepository,
         private readonly taskListRepository: ITaskListRepository,
     ) {
         this.database = database;
-        this.collectionName = 'users';
-        this.collection = collection(this.database, this.collectionName);
+        this.collection = this.database.collection('users');
     }
 
-    async findAll(): Promise<User[] | null> {
-        const snapshot = await getDocs(this.collection);
+    async findAll() {
+        const snapshot = await this.collection.get();
 
         if (snapshot.empty) return [];
 
         const users = snapshot.docs.map(doc => {
             const data = doc.data();
             return {
-                id: doc.id,
+                uid: doc.id,
                 name: data.name,
                 email: data.email,
                 photoURL: data.photoURL ?? null,
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
             };
         });
 
         return users;
     }
 
-    async findById(data: IFindUserByIdDTO): Promise<Omit<User, 'id'> | null> {
-        const docRef = doc(this.database, this.collectionName, data.userId);
+    async findById(data: IFindUserByIdDTO) {
+        const snapshot = await this.collection.doc(data.uid).get();
 
-        const snapshot = await getDoc(docRef);
-
-        if (!snapshot.exists())
+        if (!snapshot.exists)
             throw new NotFoundError(
-                'Nenhum usuário com esse identificado encontrado.',
+                'Nenhum usuário com esse identificador encontrado.',
             );
 
-        return snapshot.data() as User;
-    }
-
-    async findByEmail(
-        data: IFindUserByEmailDTO,
-    ): Promise<UserWithPassword | null> {
-        const q = query(this.collection, where('email', '==', data.email));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) return null;
-
-        const docSnap = querySnapshot.docs[0];
-        if (!docSnap) return null;
-
         return {
-            id: docSnap.id,
-            ...(docSnap.data() as Omit<UserWithPassword, 'id'>),
+            ...(snapshot.data() as Omit<User, 'uid'>),
+            uid: snapshot.id,
         };
     }
 
-    async findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null> {
-        // verifica se o usuário existe
-        await this.findById({ userId: data.userId });
+    async findByEmail(data: IFindUserByEmailDTO) {
+        const snapshot = await this.collection
+            .where('email', '==', data.email)
+            .get();
 
-        // procura as tarefas por usuário
+        if (snapshot.empty) return null;
+
+        const docSnap = snapshot.docs[0];
+        if (!docSnap) return null;
+        const dataUser = docSnap.data() as User;
+
+        return { ...dataUser, uid: docSnap.id };
+    }
+
+    async findTasksByOwner({ uid }: IFindTasksByUser) {
+        await this.findById({ uid });
+
         const tasks = await this.taskRepository.findTasksByOwner({
-            userId: data.userId,
+            userId: uid,
         });
 
         return tasks;
     }
 
-    async findTasksListsByOwner(
-        data: IFindTasksByTaskListDTO,
-    ): Promise<TaskList[] | null> {
-        const { userId } = data;
+    async findTaskListsByOwner({ uid }: IFindTaskListsByUser) {
+        await this.findById({ uid });
 
-        await this.findById({ userId });
-
-        const tasksLists = await this.taskListRepository.findTasksListsByOwner({
-            userId,
+        const taskLists = await this.taskListRepository.findTaskListsByOwner({
+            userId: uid,
         });
 
-        return tasksLists;
+        return taskLists;
     }
 
-    async create(data: ICreateUserDTO): Promise<User> {
-        const docRef = await addDoc(this.collection, {
-            name: data.name,
-            email: data.email,
-            photoURL: data.photoURL ?? null,
-            password: data.password,
-        });
-
-        const snapshot = await getDoc(docRef);
-
-        if (!snapshot.exists()) throw new BadRequest('Erro ao criar usuário.');
-
-        return {
-            id: snapshot.id,
-            ...(snapshot.data() as Omit<User, 'id'>),
+    async create({ uid, user }: ICreateUserDTO) {
+        const userToCreate = {
+            name: user.name,
+            email: user.email,
+            photoURL: user.photoURL ?? undefined,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
         };
+
+        await this.collection.doc(uid).set(userToCreate);
+
+        return { uid, ...userToCreate };
     }
 
-    async update(data: IUpdateUserDTO): Promise<void> {
-        const userRef = doc(this.database, this.collectionName, data.userId);
-
-        return await updateDoc(userRef, {
+    async update(data: IUpdateUserDTO) {
+        await this.collection.doc(data.uid).update({
             name: data.name,
+            photoURL: data.photoURL ?? undefined,
             email: data.email,
-            photoURL: data.photoURL ?? null,
+            updatedAt: Timestamp.now(),
         });
     }
 
-    async remove(data: IDeleteUserByIdDTO): Promise<void> {
-        const docRef = doc(this.database, this.collectionName, data.userId);
+    async remove({ uid }: IDeleteUserByIdDTO) {
+        await this.findById({ uid });
 
-        const user = await getDoc(docRef);
-
-        if (!user.exists())
-            throw new NotFoundError(
-                'Nenhum usuário com esse identificado encontrado.',
-            );
-
-        return await deleteDoc(docRef);
+        await this.collection.doc(uid).delete();
     }
 }

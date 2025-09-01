@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../helpers/tokens';
 import { UnauthorizedError } from '../helpers/errors';
 import { UserRepository } from '../repository/user-repository';
 import { TaskRepository } from '../repository/task-repository';
 import { TaskListRepository } from '../repository/task-list-repository';
+import { auth } from '../config/firebase-admin';
 
 export const authMiddleware = () => {
     const taskListRepository = new TaskListRepository();
@@ -13,7 +13,7 @@ export const authMiddleware = () => {
 
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const token = req.cookies.access_token as string;
+            const token = req.cookies.access_token;
 
             if (!token) {
                 throw new UnauthorizedError(
@@ -21,7 +21,8 @@ export const authMiddleware = () => {
                 );
             }
 
-            const userId = verifyToken(token);
+            const decoded = await auth.verifyIdToken(token);
+            const userId = decoded.uid;
 
             if (!userId)
                 throw new UnauthorizedError(
@@ -35,7 +36,7 @@ export const authMiddleware = () => {
                     'Não autorizado: Usuário não encontrado!',
                 );
 
-            req.user = { id: userId, ...searchedUser };
+            req.user = searchedUser;
 
             return next();
         } catch (err: any) {

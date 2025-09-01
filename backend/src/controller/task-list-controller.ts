@@ -18,7 +18,7 @@ export class TaskListController {
                 'Identificador da lista de tarefas não fornecida na requisição.',
             );
 
-        const taskList = await this.repository.findById({ taskListId });
+        const taskList = await this.repository.findById({ id: taskListId });
 
         return res.status(200).json(taskList);
     }
@@ -30,7 +30,6 @@ export class TaskListController {
             if (!req.body?.[field]) missingFields.push(field);
         });
 
-        console.log(req.body);
         if (missingFields.length > 0) {
             throw new BadRequest(
                 `Campos obrigatórios ausentes: ${missingFields.join(', ')}`,
@@ -47,6 +46,11 @@ export class TaskListController {
     async update(req: Request, res: Response) {
         const { taskListId } = req.params;
 
+        if (!taskListId)
+            throw new Error(
+                'Identificador da lista de tarefas não fornecida na requisição.',
+            );
+
         const requiredFields = ['name', 'userId'];
         const missingFields: string[] = [];
         requiredFields.forEach(field => {
@@ -58,11 +62,6 @@ export class TaskListController {
                 `Campos obrigatórios ausentes: ${missingFields.join(', ')}`,
             );
         }
-
-        if (!taskListId)
-            throw new Error(
-                'Identificador da lista de tarefas não fornecida na requisição.',
-            );
 
         await this.repository.update(req.body);
 
@@ -79,7 +78,7 @@ export class TaskListController {
                 'Identificador da lista de tarefas não fornecida na requisição.',
             );
 
-        await this.repository.remove({ taskListId });
+        await this.repository.remove({ id: taskListId });
 
         return res
             .status(204)

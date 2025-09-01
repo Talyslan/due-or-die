@@ -1,162 +1,118 @@
+import { database } from '../../config/firebase-admin';
+import { Task, Task_JOIN_TaskList, TaskList } from '../../types';
+import { NotFoundError } from '../../helpers/errors';
 import {
-    addDoc,
-    collection,
-    CollectionReference,
-    deleteDoc,
-    doc,
-    Firestore,
-    getDoc,
-    getDocs,
-    query,
-    updateDoc,
-    where,
-} from 'firebase/firestore';
-import { database } from '../../config/firebase';
-import { Task, TaskList, TaskWithTaskList } from '../../types';
-import { BadRequest, NotFoundError } from '../../helpers/errors';
-import {
-    IDeleteTaskByIdDTO,
+    ICreateTaskDTO,
+    IDeleteTaskDTO,
     IFindTaskByIdDTO,
     IFindTasksByOwnerDTO,
     IFindTasksByTaskListDTO,
     ITaskRepository,
+    IUpdateTaskDTO,
 } from './type';
-import { ITaskListRepository } from '../task-list-repository/type';
+import {
+    CollectionReference,
+    Firestore,
+    Timestamp,
+} from 'firebase-admin/firestore';
 
 export class TaskRepository implements ITaskRepository {
     private readonly collection: CollectionReference;
     private readonly database: Firestore;
-    private readonly collectionName: string;
 
-    constructor(private readonly taskListRepository: ITaskListRepository) {
+    constructor() {
         this.database = database;
-        this.collectionName = 'tasks';
-        this.collection = collection(this.database, this.collectionName);
+        this.collection = this.database.collection('tasks');
     }
 
-    async findAll(): Promise<TaskWithTaskList[]> {
-        const snapshot = await getDocs(this.collection);
+    async findAll() {
+        const snapshot = await this.collection.get();
 
         if (snapshot.empty) return [];
 
-        const tasks = await Promise.all(
-            snapshot.docs.map(async doc => {
-                const data = doc.data();
-
-                let taskList = null;
-
-                if (data.taskListId) {
-                    try {
-                        taskList = await this.taskListRepository.findById({
-                            taskListId: data.taskListId,
-                        });
-                    } catch (err) {
-                        console.warn(
-                            `TaskList ${data.taskListId} não encontrada:`,
-                            err,
-                        );
-                        taskList = null;
-                    }
-                }
-
-                return {
-                    id: doc.id,
-                    title: data.title,
-                    description: data.description,
-                    status: data.status,
-                    priority: data.priority,
-                    taskListId: data.taskListId ?? null,
-                    taskList: taskList ?? undefined,
-                    userId: data.userId,
-                } as TaskWithTaskList;
-            }),
-        );
+        const tasks = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                userId: data.userId,
+                title: data.title,
+                description: data.description,
+                status: data.status,
+                priority: data.priority,
+                taskListId: data.taskListId ?? null,
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
+            };
+        });
 
         return tasks;
     }
 
-    async findById(data: IFindTaskByIdDTO): Promise<Task | null> {
-        const docRef = doc(this.database, this.collectionName, data.taskId);
+    async findById({ id }: IFindTaskByIdDTO) {
+        const snapshot = await this.collection.doc(id).get();
 
-        const snapshot = await getDoc(docRef);
-
-        if (!snapshot.exists())
+        if (!snapshot.exists)
             throw new NotFoundError(
-                'Nenhuma tarefa com esse identificado encontrado.',
+                'Nenhuma tarefa com esse identificador encontrado.',
             );
 
-        return {
-            id: docRef.id,
-            ...(snapshot.data() as Omit<Task, 'id'>),
-        };
-    }
-
-    async findTasksByOwner(data: IFindTasksByOwnerDTO) {
-        const q = query(this.collection, where('userId', '==', data.userId));
-
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) return [];
-
-        const tasks: Task[] = [];
-        querySnapshot.forEach(doc => {
-            tasks.push({
-                id: doc.id,
-                ...(doc.data() as Omit<Task, 'id'>),
-            });
-        });
+        const tasks = await this.taskJOINtaskListItem(snapshot);
 
         return tasks;
     }
 
-    async findTasksByTaskList(
-        data: IFindTasksByTaskListDTO,
-    ): Promise<Task[] | null> {
-        const q = query(
-            this.collection,
-            where('userId', '==', data.userId),
-            where('taskList', '==', data.taskListId),
+    async findTasksByOwner({ userId }: IFindTasksByOwnerDTO) {
+        const snapshot = await this.collection
+            .where('userId', '==', userId)
+            .get();
+
+        if (snapshot.empty) return [];
+
+        const tasks = Promise.all(
+            snapshot.docs.map(doc => this.taskJOINtaskListItem(doc)),
         );
 
-        const querySnapshot = await getDocs(q);
+        return tasks;
+    }
 
-        if (querySnapshot.empty) return [];
+    async findTasksByTaskList({ userId, taskListId }: IFindTasksByTaskListDTO) {
+        const snapshot = await this.collection
+            .where('userId', '==', userId)
+            .where('taskListId', '==', taskListId)
+            .get();
 
-        const tasks: Task[] = [];
-        querySnapshot.forEach(doc => {
-            tasks.push({
-                id: doc.id,
-                ...(doc.data() as Omit<Task, 'id'>),
-            });
-        });
+        if (snapshot.empty) return [];
+
+        const tasks = Promise.all(
+            snapshot.docs.map(doc => this.taskJOINtaskListItem(doc)),
+        );
 
         return tasks;
     }
 
-    async create(data: Task): Promise<Task> {
-        const docRef = await addDoc(this.collection, {
+    async create(data: ICreateTaskDTO) {
+        const docRef = this.collection.doc();
+
+        const taskToCreate = {
             title: data.title,
-            description: data.description,
+            userId: data.userId,
+            description: data.description ?? undefined,
             status: data.status,
             priority: data.priority,
             taskListId: data.taskListId,
-            userId: data.userId,
-        });
-
-        const snapshot = await getDoc(docRef);
-
-        if (!snapshot.exists()) throw new BadRequest('Erro ao criar tarefa.');
-
-        return {
-            id: docRef.id,
-            ...(snapshot.data() as Omit<Task, 'id'>),
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
         };
+
+        await docRef.set(taskToCreate);
+
+        return { ...taskToCreate, id: docRef.id };
     }
 
-    async update(data: Task): Promise<void> {
-        const docRef = doc(this.database, this.collectionName, data.id);
+    async update(data: IUpdateTaskDTO) {
+        await this.findById({ id: data.id });
 
-        return await updateDoc(docRef, {
+        await this.collection.doc(data.id).update({
             title: data.title,
             description: data.description,
             status: data.status,
@@ -166,16 +122,41 @@ export class TaskRepository implements ITaskRepository {
         });
     }
 
-    async remove(data: IDeleteTaskByIdDTO): Promise<void> {
-        const docRef = doc(this.database, this.collectionName, data.taskId);
+    async remove(data: IDeleteTaskDTO) {
+        await this.findById({ id: data.id });
 
-        const task = await getDoc(docRef);
+        await this.collection.doc(data.id).delete();
+    }
 
-        if (!task.exists())
-            throw new NotFoundError(
-                'Nenhuma tarefa com esse identificado encontrado.',
-            );
+    private async taskJOINtaskListItem(
+        snapshot: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
+    ) {
+        const data = snapshot.data() as Task;
 
-        return await deleteDoc(docRef);
+        const taskListSnap = await this.database
+            .collection('tasks-lists')
+            .doc(data.taskListId)
+            .get();
+
+        if (!taskListSnap.exists) {
+            return {
+                ...(data as Omit<Task, 'id' | 'taskListId'>),
+                taskList: null,
+                id: data.id,
+            } as Task_JOIN_TaskList;
+        }
+
+        const { userId: _removed, ...taskListData } =
+            taskListSnap.data() as Omit<TaskList, 'id'>;
+
+        return {
+            ...(data as Omit<Task, 'id' | 'taskListId'>),
+            taskList: {
+                id: taskListSnap.id,
+                ...taskListData,
+            },
+
+            id: data.id,
+        } as Task_JOIN_TaskList;
     }
 }

@@ -1,12 +1,17 @@
-import { Task, TaskWithTaskList } from '../../types';
+import { Task, Task_JOIN_TaskList } from '../../types';
 
 export interface IFindTaskByIdDTO {
-    taskId: string;
+    id: string;
 }
 
-export interface IDeleteTaskByIdDTO {
-    taskId: string;
+export interface IDeleteTaskDTO {
+    id: string;
 }
+
+export interface IUpdateTaskDTO extends Omit<Task, 'createdAt' | 'updatedAt'> {}
+
+export interface ICreateTaskDTO
+    extends Omit<Task, 'id' | 'createdAt' | 'updatedAt'> {}
 
 export interface IFindTasksByOwnerDTO {
     userId: string;
@@ -18,11 +23,15 @@ export interface IFindTasksByTaskListDTO {
 }
 
 export interface ITaskRepository {
-    findAll(): Promise<TaskWithTaskList[] | null>;
-    findById(data: IFindTaskByIdDTO): Promise<Task | null>;
-    create(data: Task): Promise<Task>;
-    findTasksByOwner(data: IFindTasksByOwnerDTO): Promise<Task[] | null>;
-    findTasksByTaskList(data: IFindTasksByTaskListDTO): Promise<Task[] | null>;
-    update(data: Task): Promise<void>;
-    remove(data: IDeleteTaskByIdDTO): Promise<void>;
+    findAll(): Promise<Task[] | null>;
+    findById(data: IFindTaskByIdDTO): Promise<Task_JOIN_TaskList | null>;
+    findTasksByOwner(
+        data: IFindTasksByOwnerDTO,
+    ): Promise<Task_JOIN_TaskList[] | null>;
+    findTasksByTaskList(
+        data: IFindTasksByTaskListDTO,
+    ): Promise<Task_JOIN_TaskList[] | null>;
+    create(data: ICreateTaskDTO): Promise<Task>;
+    update(data: IUpdateTaskDTO): Promise<void>;
+    remove(data: IDeleteTaskDTO): Promise<void>;
 }

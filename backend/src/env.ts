@@ -8,10 +8,6 @@ const envSchema = z.object({
     JWT_SECRET: z.string(),
     TOKEN_SECRET: z.string(),
     REFRESH_TOKEN_SECRET: z.string(),
-    FIREBASE_API_KEY: z.string(),
-    FIREBASE_PROJECT_ID: z.string(),
-    FIREBASE_AUTH_DOMAIN: z.string(),
-    FIREBASE_APP_ID: z.string(),
     ENVIRONMENT: z.enum(['local', 'production']),
 });
 

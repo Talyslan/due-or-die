@@ -18,7 +18,7 @@ export class TaskController {
                 'Identificador da tarefa não fornecida na requisição.',
             );
 
-        const task = await this.repository.findById({ taskId });
+        const task = await this.repository.findById({ id: taskId });
 
         return res.status(200).json(task);
     }
