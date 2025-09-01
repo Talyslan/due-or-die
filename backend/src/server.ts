@@ -13,5 +13,6 @@ declare global {
 }
 
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}!`);
+    console.log(`=== Server listening on port ${port}! ===`);
+    console.log(`- Docs swagger listening on route /docs!`);
 });
