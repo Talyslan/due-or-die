@@ -6,7 +6,7 @@ import { Button, Input } from '@/components';
 import { GoogleLogin } from '@/components/GoogleLogin';
 import Link from 'next/link';
 import { InputError } from '@/components/InputError';
-import { LogIn } from './action';
+import { LogIn } from '../../../../../action/user-actions/login-action';
 import { toast } from 'sonner';
 import { LoginFormData, loginSchema } from './schema';
 import { useRouter } from 'next/navigation';

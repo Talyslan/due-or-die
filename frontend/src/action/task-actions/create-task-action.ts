@@ -1,6 +1,6 @@
 'use client';
 
-import { IActionResponse } from '@/action/IActionResponse';
+import { IActionResponse } from '@/action';
 import { fetcher } from '@/services';
 
 export async function CreateTask(

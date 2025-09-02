@@ -2,8 +2,14 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, CustomLink, Input, ListIcon, StatusIcon } from '@/components';
-import { InputError } from '@/components/InputError';
+import {
+    Button,
+    CustomLink,
+    Input,
+    ListIcon,
+    StatusIcon,
+    InputError,
+} from '@/components';
 import { AddTaskFormData, addTaskSchema } from './schema';
 import {
     Select,
@@ -15,7 +21,10 @@ import {
     SelectValue,
 } from '../ui/select';
 import { useRouter } from 'next/navigation';
-import { DeleteTask, UpdateTask } from './action';
+import {
+    DeleteTask,
+    UpdateTask,
+} from '../../action/task-actions/update-task-action';
 import { toast } from 'sonner';
 
 interface Props {

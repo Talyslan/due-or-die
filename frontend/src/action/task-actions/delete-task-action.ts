@@ -1,26 +1,5 @@
-'use client';
-
-import { IActionResponse } from '@/action/IActionResponse';
 import { fetcher } from '@/services';
-
-export async function UpdateTask(data: Task): Promise<IActionResponse<Task>> {
-    try {
-        await fetcher<{ message: string }>(`/tasks/${data.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-        });
-
-        return {
-            success: true,
-            message: 'Tarefa atualizado com sucesso!',
-        };
-    } catch (err: any) {
-        return {
-            success: false,
-            message: err?.message || 'Erro ao atualizar a tarefa.',
-        };
-    }
-}
+import { IActionResponse } from '../IActionResponse';
 
 export async function DeleteTask(
     taskId: string,

@@ -1,6 +1,6 @@
-import { env } from '@/env';
-import { applyCorrectHeaders } from '@/utils/apply-correct-headers';
 import { redirect } from 'next/navigation';
+import { env } from '@/env';
+import { applyCorrectHeaders } from '@/utils';
 
 export async function fetcher<T>(
     url: string,

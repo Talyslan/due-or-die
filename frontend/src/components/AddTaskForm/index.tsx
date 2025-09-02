@@ -2,8 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, ListIcon, StatusIcon } from '@/components';
-import { InputError } from '@/components/InputError';
+import { Button, Input, ListIcon, StatusIcon, InputError } from '@/components';
 import { AddTaskFormData, addTaskSchema } from './schema';
 import {
     Select,
@@ -15,7 +14,7 @@ import {
     SelectValue,
 } from '../ui/select';
 import { useRouter } from 'next/navigation';
-import { CreateTask } from './action';
+import { CreateTask } from '../../action/task-actions/create-task-action';
 import { toast } from 'sonner';
 
 interface Props {

@@ -22,7 +22,7 @@ import {
     SimpleListIcon,
 } from '../assets';
 import { MenuItem } from './MenuItem';
-import { Logout } from './action/action-logout';
+import { Logout } from '../../action/user-actions/logout-action';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui';

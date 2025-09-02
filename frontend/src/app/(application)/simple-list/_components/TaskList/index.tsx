@@ -1,9 +1,9 @@
 'use client';
 
 import { Input, CustomLink, PlusIcon } from '@/components';
-import { UpdateTask } from '@/components/EditTaskForm/action';
+import { UpdateTask } from '@/action/task-actions/update-task-action';
 import { cn } from '@/lib/utils';
-import { formatDate } from '@/utils/data';
+import { formatDate } from '@/utils/date';
 import { CircleChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';

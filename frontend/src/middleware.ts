@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetcher } from './services';
 import { serialize } from 'cookie';
-import { extractAndParseCookies } from './utils/extract-and-parse-cookies';
-import { setResponseCookies } from './utils/set-response-cookies';
+import { extractAndParseCookies, setResponseCookies } from './utils';
 
 export async function middleware(request: NextRequest) {
     const response = NextResponse.next();
