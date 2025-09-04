@@ -4,7 +4,7 @@ export interface User {
     uid: string;
     name: string;
     email: string;
-    photoURL: string | undefined;
+    photoURL: string | null;
 
     createdAt: Timestamp;
     updatedAt: Timestamp;

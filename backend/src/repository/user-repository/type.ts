@@ -1,4 +1,5 @@
 import { Task_JOIN_TaskList, TaskList, User } from '../../types';
+import { ParsedQs } from 'qs';
 
 export interface IUpdateUserDTO extends Omit<User, 'createdAt' | 'updatedAt'> {}
 interface IUserUID {
@@ -11,7 +12,7 @@ export interface IFindTaskListsByUser extends IUserUID {}
 export interface IDeleteUserByIdDTO extends IUserUID {}
 
 export interface IFindUserByEmailDTO {
-    email: string;
+    email: string | ParsedQs | (string | ParsedQs)[];
 }
 
 export interface ICreateUserDTO {

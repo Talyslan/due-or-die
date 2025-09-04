@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ITaskRepository } from '../repository/task-repository/type';
-import { BadRequest } from '../helpers/errors';
+import { BadRequest } from '../helpers';
 
 export class TaskController {
     constructor(private readonly repository: ITaskRepository) {}
@@ -20,7 +20,7 @@ export class TaskController {
 
         const task = await this.repository.findById({ id: taskId });
 
-        return res.status(200).json(task);
+        return res.status(200).json({ data: task });
     }
 
     async create(req: Request, res: Response) {
@@ -91,10 +91,10 @@ export class TaskController {
                 'Identificador da tarefa não fornecida na requisição.',
             );
 
-        await this.repository.remove({ taskId });
+        await this.repository.remove({ id: taskId });
 
         return res
             .status(204)
-            .json({ response: 'Tarefa deletada com sucesso.' });
+            .json({ message: 'Tarefa deletada com sucesso.' });
     }
 }

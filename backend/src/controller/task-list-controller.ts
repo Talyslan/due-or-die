@@ -20,7 +20,7 @@ export class TaskListController {
 
         const taskList = await this.repository.findById({ id: taskListId });
 
-        return res.status(200).json(taskList);
+        return res.status(200).json({ data: taskList });
     }
 
     async create(req: Request, res: Response) {
@@ -82,6 +82,6 @@ export class TaskListController {
 
         return res
             .status(204)
-            .json({ response: 'Lista de tarefas deletada com sucesso.' });
+            .json({ message: 'Lista de tarefas deletada com sucesso.' });
     }
 }

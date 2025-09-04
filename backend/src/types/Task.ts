@@ -5,7 +5,7 @@ export interface Task {
     id: string;
     userId: string;
     title: string;
-    description: string | undefined;
+    description: string | null;
     status: 'to-do' | 'doing' | 'done';
     priority: 'low' | 'medium' | 'high';
     taskListId: string;

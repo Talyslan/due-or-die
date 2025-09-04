@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { UnauthorizedError } from '../helpers';
+import { UnauthorizedError, verifyToken } from '../helpers';
 import {
     UserRepository,
     TaskRepository,
     TaskListRepository,
 } from '../repository';
-import { auth } from '../config';
+import jwt from 'jsonwebtoken';
+import { env } from '../env';
 
 export const authMiddleware = () => {
     const taskListRepository = new TaskListRepository();
@@ -22,8 +23,8 @@ export const authMiddleware = () => {
                 );
             }
 
-            const decoded = await auth.verifyIdToken(token);
-            const userId = decoded.uid;
+            const decoded = verifyToken(token);
+            const userId = decoded;
 
             if (!userId)
                 throw new UnauthorizedError(

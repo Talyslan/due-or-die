@@ -103,7 +103,7 @@ export class UserRepository implements IUserRepository {
         const userToCreate = {
             name: user.name,
             email: user.email,
-            photoURL: user.photoURL ?? undefined,
+            photoURL: user.photoURL ?? null,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
         };
@@ -116,7 +116,7 @@ export class UserRepository implements IUserRepository {
     async update(data: IUpdateUserDTO) {
         await this.collection.doc(data.uid).update({
             name: data.name,
-            photoURL: data.photoURL ?? undefined,
+            photoURL: data.photoURL ?? null,
             email: data.email,
             updatedAt: Timestamp.now(),
         });

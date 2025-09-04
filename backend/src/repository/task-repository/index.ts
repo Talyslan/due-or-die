@@ -96,7 +96,7 @@ export class TaskRepository implements ITaskRepository {
         const taskToCreate = {
             title: data.title,
             userId: data.userId,
-            description: data.description ?? undefined,
+            description: data.description ?? null,
             status: data.status,
             priority: data.priority,
             taskListId: data.taskListId,
