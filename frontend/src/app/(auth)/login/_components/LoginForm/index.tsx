@@ -2,21 +2,23 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input } from '@/components';
-import { GoogleLogin } from '@/components/GoogleLogin';
+import {
+    Button,
+    Input,
+    InputError,
+    GoogleLogin,
+    PasswordVisualization,
+} from '@/components';
 import Link from 'next/link';
-import { InputError } from '@/components/InputError';
-import { LogIn } from '../../../../../action/user-actions/login-action';
 import { toast } from 'sonner';
 import { LoginFormData, loginSchema } from './schema';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth';
-import { PasswordVisualization } from '@/components/PasswordVisualization';
 import { useState } from 'react';
 
 export function LoginForm() {
     const router = useRouter();
-    const { setUser } = useAuth();
+    const { signIn } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,
@@ -27,11 +29,10 @@ export function LoginForm() {
     });
 
     const onSubmit = async (data: LoginFormData) => {
-        const action = await LogIn(data);
+        const action = await signIn(data.email, data.password);
 
         if (action.success) {
             toast.success(action.message);
-            setUser(action.data ?? null);
             router.push('/simple-list');
         } else {
             toast.error(action.message);

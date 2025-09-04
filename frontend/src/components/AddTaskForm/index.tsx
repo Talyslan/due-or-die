@@ -2,8 +2,10 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, ListIcon, StatusIcon, InputError } from '@/components';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { AddTaskFormData, addTaskSchema } from './schema';
+import { Button, Input, ListIcon, StatusIcon, InputError } from '@/components';
 import {
     Select,
     SelectContent,
@@ -13,9 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '../ui/select';
-import { useRouter } from 'next/navigation';
-import { CreateTask } from '../../action/task-actions/create-task-action';
-import { toast } from 'sonner';
+import { CreateTask } from '@/action';
 
 interface Props {
     tasksLists: TaskList[];
@@ -45,7 +45,7 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
             userId: userId,
             taskListId: tasksLists[0].id,
             createdAt: new Date(),
-            updateAt: new Date(),
+            updatedAt: new Date(),
         };
 
         const action = await CreateTask(finalData);

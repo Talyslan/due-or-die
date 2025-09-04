@@ -1,31 +1,43 @@
-interface Task {
-    id: string;
-    title: string;
-    description?: string; // mudanças aqui
-    status: 'to-do' | 'doing' | 'done';
-    priority: 'low' | 'medium' | 'high';
-    taskListId: string;
-    userId: string;
-
-    createdAt: Data;
-    updateAt: Date;
-}
-
 type TaskStatus = 'to-do' | 'doing' | 'done';
 type TaskPriority = 'low' | 'medium' | 'high';
+interface Task {
+    id: string;
+    userId: string;
+    title: string;
+    description?: string;
+    status: TaskStatus;
+    priority: TaskPriority;
+    taskListId: string;
+
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
+}
 
 interface TaskList {
     id: string;
-    name: string;
     userId: string;
+    name: string;
+
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
+}
+
+interface Task_JOIN_TaskList extends Omit<Task, 'taskListId'> {
+    taskList: Omit<TaskList, 'userId'> | null;
+}
+
+interface TaskList_JOIN_Tasks extends TaskList {
+    tasks: Task[];
 }
 
 interface User {
-    id: string;
+    uid: string;
     name: string;
     email: string;
-    password: string;
-    photoURL?: string | undefined;
+    photoURL?: string;
+
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
 }
 
 interface RequestInit extends RequestInit {
@@ -33,6 +45,12 @@ interface RequestInit extends RequestInit {
     timeout?: number;
 }
 
-interface IFetch<T> {
-    data: T;
-}
+type FetchResult<T> =
+    | {
+          message: string | null;
+          data: null;
+      }
+    | {
+          message: string | null;
+          data: T;
+      };

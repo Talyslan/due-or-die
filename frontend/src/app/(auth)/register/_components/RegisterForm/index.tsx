@@ -1,21 +1,25 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input } from '@/components';
-import { GoogleLogin } from '@/components/GoogleLogin';
-import Link from 'next/link';
-import { RegisterFormData, registerSchema } from './schema';
-import { InputError } from '@/components/InputError';
-import { CreateUser } from '../../../../../action/user-actions/create-user-action';
-import { toast } from 'sonner';
-import { fetcher } from '@/services';
-import { LogIn } from '@/action/user-actions/login-action';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { PasswordVisualization } from '@/components/PasswordVisualization';
+import Link from 'next/link';
+import { toast } from 'sonner';
+import {
+    Button,
+    Input,
+    InputError,
+    GoogleLogin,
+    PasswordVisualization,
+} from '@/components';
+import { RegisterFormData, registerSchema } from './schema';
+import { useAuth } from '@/context/auth';
+import { fetcher } from '@/services';
 
 export function RegisterForm() {
+    const router = useRouter();
+    const { createAccount, signIn, user, handleSetUser } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const {
@@ -25,28 +29,35 @@ export function RegisterForm() {
     } = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
     });
-    const router = useRouter();
 
     const onSubmit = async (data: RegisterFormData) => {
-        const action = await CreateUser(data);
+        const { success, message } = await createAccount(data);
 
-        if (action.success) {
-            toast.success(action.message);
-            const result = await LogIn(data);
+        console.log('CreateAccount success: ' + success);
+        console.log('CreateAccount message: ' + message);
+        if (!success) toast.error(message);
 
-            await fetcher('/tasks-lists/', {
-                method: 'POST',
-                body: JSON.stringify({
-                    name: 'Pessoal',
-                    userId: result.data?.data.id,
-                }),
-            });
+        const {
+            success: loginSuccess,
+            message: loginMessage,
+            data: userLogged,
+        } = await signIn(data.email, data.password);
 
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            result.success && router.push('/simple-list');
-        } else {
-            toast.error(action.message);
-        }
+        console.log('Login success: ' + loginSuccess);
+        console.log('Login message: ' + loginMessage);
+
+        handleSetUser(userLogged);
+        console.log(user);
+
+        await fetcher('/tasks-lists/', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: 'Pessoal',
+                userId: userLogged?.uid,
+            }),
+        });
+
+        if (loginSuccess) router.push('/simple-list');
     };
 
     return (
@@ -125,7 +136,7 @@ export function RegisterForm() {
 
             <div className="flex flex-col gap-2 w-full max-w-sm">
                 <Button className="w-full" disabled={isSubmitting}>
-                    Entrar
+                    Criar conta
                 </Button>
                 <span className="text-sm">
                     Já faz parte do Due or Die?{' '}

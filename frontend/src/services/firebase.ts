@@ -1,6 +1,7 @@
 'use client';
+
 import { env } from '@/env';
-import { initializeApp } from 'firebase/app';
+import { getApp, getApps, initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
     apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,5 +10,4 @@ const firebaseConfig = {
     appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();

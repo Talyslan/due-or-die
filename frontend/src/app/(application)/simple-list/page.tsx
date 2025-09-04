@@ -5,6 +5,7 @@ import { fetcher } from '@/services';
 import { AddTaskForm } from '@/components/AddTaskForm';
 
 interface Props {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     searchParams: Promise<any>;
 }
 
@@ -12,19 +13,18 @@ export default async function SimpleList({ searchParams }: Props) {
     const queryParams = await searchParams;
     const open = !!queryParams.addTask;
 
-    const data = new Date();
-    const day = data.getDate();
+    const date = new Date();
+    const day = date.getDate();
     const month = firstLetterToUpperCase(
-        data.toLocaleString('pt-BR', { month: 'long' }),
+        date.toLocaleString('pt-BR', { month: 'long' }),
     );
-    const year = data.getFullYear();
+    const year = date.getFullYear();
 
-    const { data: user } = await fetcher<IFetch<User>>(`/users/me`);
-    const { data: result } = await fetcher<IFetch<Task[]>>(
-        `/users/${user.id}/tasks`,
+    const { data: user } = await fetcher<User>(`/users/me`);
+    const { data: tasks } = await fetcher<Task[]>(`/users/${user?.uid}/tasks`);
+    const { data: tasklists } = await fetcher<TaskList[]>(
+        `/users/${user?.uid}/tasks-lists`,
     );
-    const tasks = result.tasks;
-    const taskslists = await fetcher(`/users/${user.id}/tasks-lists`);
 
     return (
         <div className="flex justify-between gap-10 h-full">
@@ -38,10 +38,7 @@ export default async function SimpleList({ searchParams }: Props) {
             </div>
 
             {open ? (
-                <AddTaskForm
-                    tasksLists={taskslists.data.tasksLists}
-                    userId={user.id}
-                />
+                <AddTaskForm tasksLists={tasklists!} userId={user!.uid} />
             ) : (
                 <div className="hidden lg:flex w-full h-full flex-col justify-center items-center bg-main-color-100/10 shadow-lg gap-2">
                     <PencilIcon className="text-gray-100" />

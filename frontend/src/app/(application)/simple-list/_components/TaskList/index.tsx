@@ -11,7 +11,7 @@ import { priorityColors, statusColors } from './priority-and-status-colors';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
-    tasks: Task[];
+    tasks: Task[] | null;
 }
 
 export function TaskList({ tasks }: IProps) {
@@ -58,12 +58,14 @@ export function TaskList({ tasks }: IProps) {
                                     htmlFor={`${task.id}`}
                                     className="flex items-center gap-3 cursor-pointer"
                                     onClick={e => e.stopPropagation()}
-                                    onChange={e => handleTaskStatus(e, task)}
                                 >
                                     <Input
                                         type="checkbox"
                                         id={`${task.id}`}
                                         className="w-4 h-4 accent-success border-gray-300 rounded"
+                                        onChange={e =>
+                                            handleTaskStatus(e, task)
+                                        }
                                     />
                                     <span className="text-gray-200 font-medium">
                                         {task.title}

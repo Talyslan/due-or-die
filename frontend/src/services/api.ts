@@ -1,44 +1,62 @@
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 import { env } from '@/env';
-import { applyCorrectHeaders } from '@/utils';
+import { applyCorrectHeaders, isClientSide } from '@/utils';
 
 export async function fetcher<T>(
     url: string,
     config: RequestInit = {},
-): Promise<T> {
+): Promise<FetchResult<T>> {
     const fullURL = `${env.NEXT_PUBLIC_API_URL}${url}`;
     const headers = await applyCorrectHeaders(config);
 
     try {
-        const response = await fetch(fullURL, {
+        let response = await fetch(fullURL, {
             ...config,
             headers,
             credentials: 'include',
         });
 
-        const text = await response.text();
-        const data = text ? JSON.parse(text) : null;
+        if (
+            isClientSide() &&
+            response.status === 401 &&
+            !url.includes('/users/me') &&
+            !url.includes('/users/login')
+        ) {
+            await fetch(`${env.NEXT_PUBLIC_API_URL}/users/refresh-token`, {
+                ...config,
+                method: 'POST',
+                credentials: 'include',
+                headers,
+            });
+            response = await fetch(fullURL, {
+                ...config,
+                headers,
+                credentials: 'include',
+            });
+            if (response.status === 401)
+                redirect('/', 'replace' as RedirectType);
+        }
+
+        const json = await response.json();
 
         if (!response.ok) {
-            const message =
-                data?.message || response.statusText || 'Erro desconhecido';
+            const message = json?.message ?? 'Erro desconhecido';
             throw new Error(message);
         }
 
-        return data as T;
-    } catch (err: any) {
+        return { data: json.data ?? null, message: json.message ?? null };
+    } catch (err) {
+        const error = err as Error;
+        console.error('API fetch error:', error);
+
         if (
-            err.message.includes('Token expirado') ||
-            err.message.includes('Não autorizado')
+            error.message.includes('Token expirado') ||
+            error.message.includes('Não autorizado')
         ) {
-            if (typeof window !== 'undefined') {
-                window.location.href = '/login';
-            } else {
-                redirect('/login');
-            }
+            if (isClientSide()) window.location.href = '/login';
+            else redirect('/login');
         }
 
-        console.error('API fetch error:', err);
-        throw err;
+        throw error;
     }
 }

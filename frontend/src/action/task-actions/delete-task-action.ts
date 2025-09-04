@@ -18,7 +18,8 @@ export async function DeleteTask(
             success: true,
             message: 'Usuário deletado com sucesso!',
         };
-    } catch (err: any) {
+    } catch (error) {
+        const err = error as Error;
         return {
             success: false,
             message: err?.message || 'Erro ao deletar o usuário.',
