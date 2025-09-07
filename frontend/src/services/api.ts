@@ -53,8 +53,21 @@ export async function fetcher<T>(
             error.message.includes('Token expirado') ||
             error.message.includes('Não autorizado')
         ) {
-            if (isClientSide()) window.location.href = '/login';
-            else redirect('/login');
+            console.log('to aqui');
+            await fetch(`${env.NEXT_PUBLIC_API_URL}/users/refresh-token`, {
+                ...config,
+                method: 'POST',
+                credentials: 'include',
+                headers,
+            });
+            const response = await fetch(fullURL, {
+                ...config,
+                headers,
+                credentials: 'include',
+            });
+            // console.log(response);
+            if (response.status === 401)
+                redirect('/', 'replace' as RedirectType);
         }
 
         throw error;

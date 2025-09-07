@@ -5,8 +5,6 @@ import {
     TaskRepository,
     TaskListRepository,
 } from '../repository';
-import jwt from 'jsonwebtoken';
-import { env } from '../env';
 
 export const authMiddleware = () => {
     const taskListRepository = new TaskListRepository();

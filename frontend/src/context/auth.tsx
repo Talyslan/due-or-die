@@ -109,9 +109,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
             });
 
             const { data } = await fetcher<User>('/users/me');
-            // handleSetUser(data);
-
-            // console.log(user);
+            console.log(data);
+            await setUser(data);
+            console.log(user);
 
             return {
                 success: true,
@@ -149,7 +149,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const signOut = async () => {
         try {
             await auth.signOut();
-            await fetcher('/users/logout');
+            await fetcher('/users/logout', { method: 'POST' });
 
             handleSetUser(null);
 

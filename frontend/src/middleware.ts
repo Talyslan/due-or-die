@@ -8,6 +8,8 @@ export async function middleware(request: NextRequest) {
 
     const token = request.cookies.get('access_token')?.value;
     const refreshToken = request.cookies.get('refresh_token')?.value;
+    // console.log(token);
+    // console.log(refreshToken);
 
     if (
         (!token || token === 'undefined') &&
@@ -22,7 +24,7 @@ export async function middleware(request: NextRequest) {
         refreshToken &&
         refreshToken !== 'undefined'
     ) {
-        const { token: newToken } = await fetcher<{ token: string }>(
+        const { data: newToken } = await fetcher<string>(
             '/users/refresh-token',
             {
                 method: 'POST',

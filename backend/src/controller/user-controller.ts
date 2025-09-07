@@ -8,6 +8,7 @@ import {
     applyTokenCookies,
     BadRequest,
     UnauthorizedError,
+    NotFoundError,
 } from '../helpers';
 import { env } from '../env';
 
@@ -19,7 +20,8 @@ export class UserController {
 
         if (email) {
             const user = await this.repository.findByEmail({ email });
-            if (user) return res.status(200).json({ data: user });
+            if (!user) throw new NotFoundError('Usuário não encontrado');
+            return res.status(200).json({ data: user });
         }
 
         const users = await this.repository.findAll();
@@ -115,7 +117,7 @@ export class UserController {
 
     public async refreshToken(req: Request, res: Response) {
         const refreshToken = req.cookies.refresh_token as string;
-
+        console.log(refreshToken);
         if (!refreshToken)
             throw new UnauthorizedError('O refresh token não foi fornecido.');
 
@@ -136,13 +138,13 @@ export class UserController {
             maxAge: 60 * 5 * 1000,
         });
 
-        res.status(200).json({ token: newToken });
+        res.status(200).json({ data: newToken });
     }
 
     public async logout(_req: Request, res: Response) {
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
-
+        console.log('logout com sucesso');
         res.status(200).json({ message: 'Logout foi bem sucedido!' });
     }
 
