@@ -12,36 +12,30 @@ export const authMiddleware = () => {
     const repository = new UserRepository(taskRepository, taskListRepository);
 
     return async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const token = req.cookies.access_token;
+        const token = req.cookies.access_token;
 
-            if (!token) {
-                throw new UnauthorizedError(
-                    'Não autorizado: Token inexistente!',
-                );
-            }
-
-            const decoded = verifyToken(token);
-            const userId = decoded;
-
-            if (!userId)
-                throw new UnauthorizedError(
-                    'Não autorizado: Token expirado ou inválido!',
-                );
-
-            const searchedUser = await repository.findById({ uid: userId });
-
-            if (!searchedUser)
-                throw new UnauthorizedError(
-                    'Não autorizado: Usuário não encontrado!',
-                );
-
-            req.user = searchedUser;
-
-            return next();
-        } catch (err: any) {
-            console.log(err);
-            return res.status(500).json({ message: err.message });
+        if (!token) {
+            throw new UnauthorizedError('Não autorizado: Token inexistente!');
         }
+
+        const decoded = verifyToken(token);
+        const userId = decoded;
+
+        if (!userId) {
+            throw new UnauthorizedError(
+                'Não autorizado: Token expirado ou inválido!',
+            );
+        }
+
+        const searchedUser = await repository.findById({ uid: userId });
+
+        if (!searchedUser)
+            throw new UnauthorizedError(
+                'Não autorizado: Usuário não encontrado!',
+            );
+
+        req.user = searchedUser;
+
+        return next();
     };
 };

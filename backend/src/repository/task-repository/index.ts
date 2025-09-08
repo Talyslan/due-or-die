@@ -131,11 +131,12 @@ export class TaskRepository implements ITaskRepository {
     private async taskJOINtaskListItem(
         snapshot: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
     ) {
-        const data = snapshot.data() as Task;
+        const { taskListId, ...data } =
+            snapshot.data() as Task;
 
         const taskListSnap = await this.database
             .collection('tasks-lists')
-            .doc(data.taskListId)
+            .doc(taskListId)
             .get();
 
         if (!taskListSnap.exists) {
