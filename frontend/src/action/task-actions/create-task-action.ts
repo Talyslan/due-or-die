@@ -1,5 +1,3 @@
-'use client';
-
 import { IActionResponse } from '@/action';
 import { fetcher } from '@/services';
 
@@ -7,19 +5,22 @@ export async function CreateTask(
     data: Omit<Task, 'id'>,
 ): Promise<IActionResponse<Task>> {
     try {
-        const response = await fetcher<{ message: string }>('/tasks/', {
+        const { message } = await fetcher('/tasks/', {
             method: 'POST',
             body: JSON.stringify(data),
         });
 
         return {
+            data: null,
             success: true,
-            message: response.message,
+            message,
         };
-    } catch (err: any) {
+    } catch (error) {
+        const err = error as Error;
         return {
             success: false,
-            message: err?.message,
+            message: err.message,
+            data: null,
         };
     }
 }

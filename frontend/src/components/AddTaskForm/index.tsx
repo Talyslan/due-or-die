@@ -2,6 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { AddTaskFormData, addTaskSchema } from './schema';
@@ -16,6 +17,8 @@ import {
     SelectValue,
 } from '../ui/select';
 import { CreateTask } from '@/action';
+import { cn } from '@/lib/utils';
+import { priorityColors, statusColors } from '@/utils';
 
 interface Props {
     tasksLists: TaskList[];
@@ -44,8 +47,8 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
             ...data,
             userId: userId,
             taskListId: tasksLists[0].id,
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
         };
 
         const action = await CreateTask(finalData);
@@ -64,14 +67,9 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
             className="w-full h-full flex flex-col justify-between bg-main-color-100/10 shadow-lg gap-2 p-10"
         >
             <div className="flex flex-col gap-5">
-                <div className="flex flex-col items-start gap-2">
+                <div className="flex flex-col gap-2">
                     <label htmlFor="title">
-                        <span
-                            className="font-black text-gray-200 text-xl"
-                            id="title"
-                        >
-                            Titulo:
-                        </span>
+                        <span id="title">Titulo:</span>
                         <Input
                             placeholder="Digite o titulo da sua tarefa"
                             {...register('title')}
@@ -79,10 +77,11 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
                         <InputError helperText={errors.title?.message} />
                     </label>
                 </div>
+
                 <hr className="border-t-2 border-gray-100/30" />
 
                 <label htmlFor="description">
-                    <span>Descrição</span>
+                    <span id="description">Descrição</span>
                     <Input
                         placeholder="Digite a descrição"
                         {...register('description')}
@@ -104,19 +103,41 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
                                     onValueChange={field.onChange}
                                     value={field.value}
                                 >
-                                    <SelectTrigger className="w-[180px]">
+                                    <SelectTrigger
+                                        className={cn(
+                                            'w-[180px]',
+                                            field.value
+                                                ? `${statusColors[field.value]} bg-transparent font-bold`
+                                                : '',
+                                        )}
+                                    >
                                         <SelectValue placeholder="Selecione o status" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Status</SelectLabel>
-                                            <SelectItem value="to-do">
+                                            <SelectItem
+                                                value="to-do"
+                                                className={cn(
+                                                    statusColors['to-do'],
+                                                )}
+                                            >
                                                 Para fazer
                                             </SelectItem>
-                                            <SelectItem value="doing">
+                                            <SelectItem
+                                                value="doing"
+                                                className={cn(
+                                                    statusColors['doing'],
+                                                )}
+                                            >
                                                 Em Andamento
                                             </SelectItem>
-                                            <SelectItem value="done">
+                                            <SelectItem
+                                                value="done"
+                                                className={cn(
+                                                    statusColors['done'],
+                                                )}
+                                            >
                                                 Concluído
                                             </SelectItem>
                                         </SelectGroup>
@@ -138,7 +159,14 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
                                     onValueChange={field.onChange}
                                     value={field.value}
                                 >
-                                    <SelectTrigger className="w-[180px]">
+                                    <SelectTrigger
+                                        className={cn(
+                                            'w-[180px]',
+                                            field.value
+                                                ? `${priorityColors[field.value]} bg-transparent font-bold`
+                                                : '',
+                                        )}
+                                    >
                                         <SelectValue placeholder="Selecione a prioridade" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -146,13 +174,28 @@ export function AddTaskForm({ tasksLists, userId }: Props) {
                                             <SelectLabel>
                                                 Prioridade
                                             </SelectLabel>
-                                            <SelectItem value="low">
+                                            <SelectItem
+                                                value="low"
+                                                className={cn(
+                                                    priorityColors['low'],
+                                                )}
+                                            >
                                                 Baixa
                                             </SelectItem>
-                                            <SelectItem value="medium">
+                                            <SelectItem
+                                                value="medium"
+                                                className={cn(
+                                                    priorityColors['medium'],
+                                                )}
+                                            >
                                                 Média
                                             </SelectItem>
-                                            <SelectItem value="high">
+                                            <SelectItem
+                                                value="high"
+                                                className={cn(
+                                                    priorityColors['high'],
+                                                )}
+                                            >
                                                 Alta
                                             </SelectItem>
                                         </SelectGroup>

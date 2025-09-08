@@ -5,24 +5,19 @@ export async function DeleteTask(
     taskId: string,
 ): Promise<IActionResponse<Task>> {
     try {
-        const response = await fetcher<{ message: string }>(
-            `/tasks/${taskId}`,
-            {
-                method: 'DELETE',
-            },
-        );
-
-        console.log(response);
+        await fetcher(`/tasks/${taskId}`, { method: 'DELETE' });
 
         return {
             success: true,
             message: 'Usuário deletado com sucesso!',
+            data: null,
         };
     } catch (error) {
         const err = error as Error;
         return {
             success: false,
-            message: err?.message || 'Erro ao deletar o usuário.',
+            message: err?.message || 'Erro ao deletar o usuário',
+            data: null,
         };
     }
 }

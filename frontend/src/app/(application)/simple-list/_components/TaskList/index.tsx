@@ -1,13 +1,12 @@
 'use client';
 
 import { Input, CustomLink, PlusIcon } from '@/components';
-import { UpdateTask } from '@/action/task-actions/update-task-action';
+import { UpdateTask } from '@/action';
 import { cn } from '@/lib/utils';
-import { formatDate } from '@/utils/date';
 import { CircleChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { priorityColors, statusColors } from './priority-and-status-colors';
+import { priorityColors, statusColors, formatDate } from '@/utils';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
@@ -16,6 +15,8 @@ interface IProps {
 
 export function TaskList({ tasks }: IProps) {
     const router = useRouter();
+    console.log(tasks);
+
     const handleTaskStatus = async (
         { target }: React.ChangeEvent<HTMLInputElement>,
         task: Task,
