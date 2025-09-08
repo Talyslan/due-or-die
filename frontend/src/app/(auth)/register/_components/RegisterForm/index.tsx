@@ -19,7 +19,7 @@ import { fetcher } from '@/services';
 
 export function RegisterForm() {
     const router = useRouter();
-    const { createAccount, signIn, user, handleSetUser } = useAuth();
+    const { createAccount, signIn } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const {
@@ -33,21 +33,18 @@ export function RegisterForm() {
     const onSubmit = async (data: RegisterFormData) => {
         const { success, message } = await createAccount(data);
 
-        console.log('CreateAccount success: ' + success);
-        console.log('CreateAccount message: ' + message);
+        // console.log('CreateAccount success: ' + success);
+        // console.log('CreateAccount message: ' + message);
         if (!success) toast.error(message);
 
         const {
             success: loginSuccess,
-            message: loginMessage,
+            // message: loginMessage,
             data: userLogged,
         } = await signIn(data.email, data.password);
 
-        console.log('Login success: ' + loginSuccess);
-        console.log('Login message: ' + loginMessage);
-
-        handleSetUser(userLogged);
-        console.log(user);
+        // console.log('Login success: ' + loginSuccess);
+        // console.log('Login message: ' + loginMessage);
 
         await fetcher('/tasks-lists/', {
             method: 'POST',

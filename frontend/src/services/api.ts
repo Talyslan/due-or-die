@@ -1,6 +1,7 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { env } from '@/env';
 import { applyCorrectHeaders, isClientSide } from '@/utils';
+import { customRedirectUser } from '@/utils/custom-redirect';
 
 export async function fetcher<T>(
     url: string,
@@ -16,32 +17,37 @@ export async function fetcher<T>(
             credentials: 'include',
         });
 
-        if (
-            isClientSide() &&
-            response.status === 401 &&
-            !url.includes('/users/me') &&
-            !url.includes('/users/login')
-        ) {
+        // console.log(isClientSide());
+        // console.log(response.status);
+
+        if (isClientSide() && response.status === 401) {
             await fetch(`${env.NEXT_PUBLIC_API_URL}/users/refresh-token`, {
                 ...config,
                 method: 'POST',
                 credentials: 'include',
                 headers,
             });
+
             response = await fetch(fullURL, {
                 ...config,
                 headers,
                 credentials: 'include',
             });
-            if (response.status === 401)
-                redirect('/', 'replace' as RedirectType);
+
+            if (response.status === 401) {
+                console.log('!401 token && refresh token client side');
+                customRedirectUser('/', 'replace' as RedirectType);
+            }
+
+            const json = await response.json();
+
+            return { data: json.data ?? null, message: json.message ?? null };
         }
 
         const json = await response.json();
 
         if (!response.ok) {
-            const message = json?.message ?? 'Erro desconhecido';
-            throw new Error(message);
+            throw new Error(json?.message ?? 'Erro desconhecido');
         }
 
         return { data: json.data ?? null, message: json.message ?? null };
@@ -53,21 +59,7 @@ export async function fetcher<T>(
             error.message.includes('Token expirado') ||
             error.message.includes('Não autorizado')
         ) {
-            console.log('to aqui');
-            await fetch(`${env.NEXT_PUBLIC_API_URL}/users/refresh-token`, {
-                ...config,
-                method: 'POST',
-                credentials: 'include',
-                headers,
-            });
-            const response = await fetch(fullURL, {
-                ...config,
-                headers,
-                credentials: 'include',
-            });
-            // console.log(response);
-            if (response.status === 401)
-                redirect('/', 'replace' as RedirectType);
+            redirect('/login', 'replace' as RedirectType);
         }
 
         throw error;

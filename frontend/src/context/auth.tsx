@@ -4,7 +4,6 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import { app, fetcher } from '@/services';
 import {
     createUserWithEmailAndPassword,
-    fetchSignInMethodsForEmail,
     getAuth,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
