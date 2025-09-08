@@ -131,8 +131,7 @@ export class TaskRepository implements ITaskRepository {
     private async taskJOINtaskListItem(
         snapshot: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
     ) {
-        const { taskListId, ...data } =
-            snapshot.data() as Task;
+        const { taskListId, ...data } = snapshot.data() as Task;
 
         const taskListSnap = await this.database
             .collection('tasks-lists')
@@ -141,9 +140,9 @@ export class TaskRepository implements ITaskRepository {
 
         if (!taskListSnap.exists) {
             return {
+                id: snapshot.id,
                 ...(data as Omit<Task, 'id' | 'taskListId'>),
                 taskList: null,
-                id: data.id,
             } as Task_JOIN_TaskList;
         }
 
@@ -151,13 +150,12 @@ export class TaskRepository implements ITaskRepository {
             taskListSnap.data() as Omit<TaskList, 'id'>;
 
         return {
+            id: snapshot.id,
             ...(data as Omit<Task, 'id' | 'taskListId'>),
             taskList: {
                 id: taskListSnap.id,
                 ...taskListData,
             },
-
-            id: data.id,
         } as Task_JOIN_TaskList;
     }
 }
