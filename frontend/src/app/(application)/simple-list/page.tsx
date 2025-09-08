@@ -21,7 +21,9 @@ export default async function SimpleList({ searchParams }: Props) {
     const year = date.getFullYear();
 
     const { data: user } = await fetcher<User>(`/users/me`);
-    const { data: tasks } = await fetcher<Task[]>(`/users/${user?.uid}/tasks`);
+    const { data: tasks } = await fetcher<Task_JOIN_TaskList[]>(
+        `/users/${user?.uid}/tasks`,
+    );
     const { data: tasklists } = await fetcher<TaskList[]>(
         `/users/${user?.uid}/tasks-lists`,
     );

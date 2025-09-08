@@ -5,7 +5,19 @@ export const statusColors: Record<TaskStatus, string> = {
 };
 
 export const priorityColors: Record<TaskPriority, string> = {
-    low: 'bg-green-100 text-green-600',
+    low: 'bg-gray-100 text-gray-600',
     medium: 'bg-yellow-100 text-yellow-600',
     high: 'bg-red-100 text-red-600',
+};
+
+export const priorityPT: Record<TaskPriority, string> = {
+    low: 'Baixa',
+    medium: 'Média',
+    high: 'Alta',
+};
+
+export const statusPT: Record<TaskStatus, string> = {
+    'to-do': 'Para Fazer',
+    doing: 'Em Andamento',
+    done: 'Concluído',
 };

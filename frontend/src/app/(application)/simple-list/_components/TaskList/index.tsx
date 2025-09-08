@@ -6,25 +6,31 @@ import { cn } from '@/lib/utils';
 import { CircleChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { priorityColors, statusColors, formatDate } from '@/utils';
+import {
+    priorityColors,
+    statusColors,
+    formatDate,
+    priorityPT,
+    statusPT,
+} from '@/utils';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
-    tasks: Task[] | null;
+    tasks: Task_JOIN_TaskList[] | null;
 }
 
 export function TaskList({ tasks }: IProps) {
     const router = useRouter();
-    console.log(tasks);
 
     const handleTaskStatus = async (
         { target }: React.ChangeEvent<HTMLInputElement>,
-        task: Task,
+        task: Task_JOIN_TaskList,
     ) => {
         const taskStatus = target.checked ? 'done' : 'to-do';
         task['status'] = taskStatus;
+        const taskToUpdate = { taskListId: task.taskList!.id ?? null, ...task };
 
-        const action = await UpdateTask(task);
+        const action = await UpdateTask(taskToUpdate);
 
         if (action.success) {
             toast.success(action.message);
@@ -63,6 +69,7 @@ export function TaskList({ tasks }: IProps) {
                                     <Input
                                         type="checkbox"
                                         id={`${task.id}`}
+                                        checked={task.status === 'done'}
                                         className="w-4 h-4 accent-success border-gray-300 rounded"
                                         onChange={e =>
                                             handleTaskStatus(e, task)
@@ -82,7 +89,7 @@ export function TaskList({ tasks }: IProps) {
                                             priorityColors[task.priority],
                                         )}
                                     >
-                                        {task.priority}
+                                        {priorityPT[task.priority]}
                                     </span>
                                     <span
                                         className={cn(
@@ -90,7 +97,7 @@ export function TaskList({ tasks }: IProps) {
                                             statusColors[task.status],
                                         )}
                                     >
-                                        {task.status}
+                                        {statusPT[task.status]}
                                     </span>
                                 </div>
 

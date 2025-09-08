@@ -39,12 +39,14 @@ export async function fetcher<T>(
                 customRedirectUser('/', 'replace' as RedirectType);
             }
 
-            const json = await response.json();
+            const text = await response.text();
+            const json = text ? JSON.parse(text) : {};
 
             return { data: json.data ?? null, message: json.message ?? null };
         }
 
-        const json = await response.json();
+        const text = await response.text();
+        const json = text ? JSON.parse(text) : {};
 
         if (!response.ok) {
             throw new Error(json?.message ?? 'Erro desconhecido');
