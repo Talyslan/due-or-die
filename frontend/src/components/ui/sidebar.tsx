@@ -286,7 +286,7 @@ function SidebarTrigger({
             {...props}
         >
             <div className="flex items-center justify-center w-12 h-8 bg-main-color-100/40 rounded-lg">
-                <PanelLeftIcon className="text-main-color-300 w-12 h-12" />
+                <PanelLeftIcon className="text-main-color-300 dark:text-main-color-100 w-12 h-12" />
             </div>
             <span className="sr-only">Toggle Sidebar</span>
         </Button>

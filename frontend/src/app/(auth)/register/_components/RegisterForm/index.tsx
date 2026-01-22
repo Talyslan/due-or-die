@@ -60,7 +60,7 @@ export function RegisterForm() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white-200 sm:w-1/2 w-full px-12 flex flex-col items-center justify-center gap-4"
+            className="bg-background sm:w-1/2 w-full px-12 flex flex-col items-center justify-center gap-4"
         >
             <h1 className="font-bold sm:text-5xl text-4xl">Crie sua conta</h1>
 
