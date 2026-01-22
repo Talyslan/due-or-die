@@ -1,78 +1,77 @@
-# 💀 Due or Die | To-Do List - Desafio Sootz
+# 💀 Due or Die | To-Do List
 
-Este repositório contém a solução para o desafio técnico proposto pela **Sootz (itnsify)**.  
-O objetivo é desenvolver uma aplicação **To-Do List** com autenticação de usuários e gerenciamento de tarefas, utilizando **Firebase** no backend e **Next.js** no frontend.
+This repository contains the solution to the technical challenge proposed by **Sootz (itnsify)**.  
+The objective is to develop a **To-Do List** application with user authentication and task management, using **Firebase** as the backend and **Next.js** as the frontend.
 
-## 📌 Funcionalidades
+## 📌 Features
 
-- Autenticação de usuários (login, cadastro, logout).
-- Sessões persistentes (usuário continua logado ao recarregar a página).
-- CRUD de tarefas:
-    - Criar novas tarefas.
-    - Visualizar apenas as tarefas do usuário autenticado.
-    - Atualizar (editar título, marcar como concluída/pendente).
-    - Excluir tarefas.
-- Atualização em tempo real (Firebase).
-- Design responsivo (desktop e mobile).
+- Authentication of users (login, registration, logout).
+- Persistent sessions (user remains logged in after reloading the page).
+- CRUD of tasks:
+  - Create new tasks.
+  - View only the tasks of the authenticated user.
+  - Update (edit title, mark as completed/pending).
+  - Delete tasks.
+- Real-time updates (Firebase).
+- Responsive design (desktop and mobile).
 
-## 🛠️ Tecnologias
+## 📌 Technologies
 
 ### Frontend
 
-- [Next.js](https://nextjs.org/) (React + TypeScript)
-- [TailwindCSS](https://tailwindcss.com/) (estilização)
-- [ShadCN/UI](https://ui.shadcn.com/) (componentes UI)
+- [Next.js](https://nextjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [ShadCN/UI](https://ui.shadcn.com/)
 
 ### Backend
 
-- [Node.js](https://nodejs.org/) com [Express](https://expressjs.com/) (servidor)
+- [Node.js](https://nodejs.org/) with [Express](https://expressjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Firebase Authentication](https://firebase.google.com/docs/auth) (autenticação)
-- [Cloud Firestore](https://firebase.google.com/docs/firestore) (armazenamento de tarefas)
+- [Firebase Authentication](https://firebase.google.com/docs/auth)
+- [Cloud Firestore](https://firebase.google.com/docs/firestore)
 
 ### Design
 
-- Figma
-  Para acessar e visualizar o design do projeto, [CLIQUE AQUI](https://www.figma.com/design/sTIQsAjaXGZNTzLZ0arjRy/Due-or-Die-%7C-Desafio-Sootz--Itnsify?node-id=4-15&t=xs1KJ6B7jwsoNuBK-1)
+- [Figma](https://www.figma.com/)
+- To access the design of the project, [CLICK HERE](https://www.figma.com/design/sTIQsAjaXGZNTzLZ0arjRy/Due-or-Die-%7C-Desafio-Sootz--Itnsify?node-id=4-15&t=xs1KJ6B7jwsoNuBK-1)
 
-## 📂 Estrutura do Projeto
+## Project Structure
 
-Na branch "main", será possível encontrar os seguintes arquivos e pastas:
+In the branch "main", you will find the following files and folders:
 
-- /frontend → aplicação Next.js
-- /backend → API Express + Firebase
-- README.md → instruções gerais
+- /frontend → Next.js application
+- /backend → Express + Firebase API
+- README.md → general instructions
 - LICENSE → MIT License
 
-## 💻 Como rodar o projeto localmente
+## How to run the project locally
 
-### 1. Clonar o repositório
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Talyslan/due-or-die.git
 cd due-or-die
 ```
 
-### 2. Instalar dependências
+### 2. Install dependencies
 
-💡 O projeto está configurado como **workspace**, então as dependências de frontend/ e backend/ serão instaladas automaticamente a partir da raiz.
-Você pode usar npm ou pnpm, conforme sua preferência:
+The project is configurated like a **workspace**, so the dependencies of frontend/ and backend/ will be installed automatically from the root. You can use npm or pnpm, according to your preference:
 
-Com npm:
+With npm:
 
 ```bash
 npm install
 ```
 
-Com pnpm:
+With pnpm:
 
 ```bash
 pnpm install
 ```
 
-### 3. Configurar variáveis de ambiente
+### 3. Configure environment variables
 
-Crie os arquivos `.env` (frontend) e `.env` (backend) com as variáveis de ambiente baseada nos arquivos `.env.example` em cada pasta:
+Create the `.env` (frontend) and `.env` (backend) files based on the `.env.example` files in each folder:
 
 ### 4. Rodar a aplicação
 

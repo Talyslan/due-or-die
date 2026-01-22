@@ -1,5 +1,5 @@
-import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { NextResponse } from "next/server";
+import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { NextResponse } from 'next/server';
 
 export function setResponseCookies(
     response: NextResponse,
