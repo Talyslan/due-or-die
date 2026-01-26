@@ -20,7 +20,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="pt-br">
+        <html lang="pt-br" suppressHydrationWarning>
             <head>
                 <meta
                     name="viewport"
@@ -42,16 +42,16 @@ export default function RootLayout({
                 <meta name="author" content="Due or Die Team" />
             </head>
 
-            <AuthProvider>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <body
-                        className={`${urbanist.variable} ${lobster.variable} antialiased bg-background text-foreground`}
-                        cz-shortcut-listen="true"
+            <body
+                className={`${urbanist.variable} ${lobster.variable} antialiased bg-background text-foreground`}
+                cz-shortcut-listen="true"
+            >
+                <AuthProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
                     >
                         <Toaster
                             position="top-center"
@@ -60,9 +60,9 @@ export default function RootLayout({
                             dir="ltr"
                         />
                         {children}
-                    </body>
-                </ThemeProvider>
-            </AuthProvider>
+                    </ThemeProvider>
+                </AuthProvider>
+            </body>
         </html>
     );
 }
