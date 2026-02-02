@@ -1,6 +1,6 @@
 import { CustomLink, ListIcon, StatusIcon } from '@/components';
 import { fetcher } from '@/services';
-import { firstLetterToUpperCase } from '@/utils';
+import {  GetCurrentDayMonthYear } from '@/utils';
 import { TaskList } from '../_components/TaskList';
 import { EditTaskForm } from '@/components/EditTaskForm';
 
@@ -13,6 +13,7 @@ interface PageProps {
 }
 
 export default async function TaskPage({ params, searchParams }: PageProps) {
+    const { day, month, year } = GetCurrentDayMonthYear();
     const { taskId } = await params;
     const queryParams = await searchParams;
     const edit = !!queryParams.editTask;
@@ -21,15 +22,15 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
 
     if (!taskId) return;
 
-    const data = new Date();
-    const day = data.getDate();
-    const month = firstLetterToUpperCase(
-        data.toLocaleString('pt-BR', { month: 'long' }),
-    );
-    const year = data.getFullYear();
-
     const { data: user } = await fetcher<User>(`/users/me`);
     const { data: tasks } = await fetcher<Task[]>(`/users/${user?.uid}/tasks`);
+
+    const normalizedTasks: Task_JOIN_TaskList[] | null = tasks
+        ? tasks.map(task => ({
+              ...task,
+              taskList: null,
+          }))
+        : null;
 
     return (
         <div className="flex justify-between gap-10 h-full">
@@ -39,7 +40,7 @@ export default async function TaskPage({ params, searchParams }: PageProps) {
                     Hoje, {day} de {month} de {year}
                 </h2>
 
-                <TaskList tasks={tasks} />
+                <TaskList tasks={normalizedTasks} />
             </div>
 
             {edit ? (

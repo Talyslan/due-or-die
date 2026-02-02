@@ -60,7 +60,7 @@ export function TaskList({ tasks }: IProps) {
                         <Link
                             href={`/simple-list/${task.id}`}
                             key={task.id}
-                            className="w-full flex items-center justify-between p-4 border-b border-white-200 bg-main-color-100/10 hover:shadow-sm duration-200 cursor-pointer"
+                            className="w-full flex items-center justify-between p-4 border-b border-white-200 hover:shadow-sm duration-200 cursor-pointer"
                         >
                             <div className="w-full">
                                 <div className="flex justify-between items-center gap-4">
