@@ -1,8 +1,8 @@
 import { PencilIcon } from '@/components';
 import { TaskList } from './_components/TaskList';
-import { firstLetterToUpperCase } from '@/utils/first-letter-to-upper-case';
 import { fetcher } from '@/services';
 import { AddTaskForm } from '@/components/AddTaskForm';
+import { GetCurrentDayMonthYear } from '@/utils';
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,13 +12,7 @@ interface Props {
 export default async function SimpleList({ searchParams }: Props) {
     const queryParams = await searchParams;
     const open = !!queryParams.addTask;
-
-    const date = new Date();
-    const day = date.getDate();
-    const month = firstLetterToUpperCase(
-        date.toLocaleString('pt-BR', { month: 'long' }),
-    );
-    const year = date.getFullYear();
+    const { day, month, year } = GetCurrentDayMonthYear();
 
     const { data: user } = await fetcher<User>(`/users/me`);
     const { data: tasks } = await fetcher<Task_JOIN_TaskList[]>(
