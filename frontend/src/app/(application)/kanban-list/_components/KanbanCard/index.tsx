@@ -1,16 +1,9 @@
 'use client';
 
-import { formatDate } from '@/utils';
+import { formatDate, priorityColors, priorityPT } from '@/utils';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { Clock } from 'lucide-react';
-
-const PRIORITY_COLORS = {
-    high: 'bg-red-500/10 text-red-600 border-red-200',
-    medium: 'bg-amber-500/10 text-amber-600 border-amber-200',
-    low: 'bg-slate-500/10 text-slate-600 border-slate-200',
-    default: 'bg-slate-500/10 text-slate-600 border-slate-200',
-};
 
 interface IProps {
     task: Task_JOIN_TaskList;
@@ -27,10 +20,6 @@ export function KanbanCard({ task, isOverlay }: IProps) {
         transform: CSS.Translate.toString(transform),
         opacity: isDragging && !isOverlay ? 0.3 : 1,
     };
-
-    const priorityColor =
-        PRIORITY_COLORS[task.priority as keyof typeof PRIORITY_COLORS] ||
-        PRIORITY_COLORS.default;
 
     return (
         <div
@@ -54,9 +43,9 @@ export function KanbanCard({ task, isOverlay }: IProps) {
 
             <div className="flex items-center justify-between mt-1">
                 <div
-                    className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${priorityColor}`}
+                    className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${priorityColors[task.priority]}`}
                 >
-                    {task.priority || 'low'}
+                    {priorityPT[task.priority]}
                 </div>
 
                 <div className="flex items-center gap-1 text-[10px] text-muted-foreground/60 font-medium">

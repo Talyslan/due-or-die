@@ -19,7 +19,11 @@ const COLUMNS = [
     { id: 'done', title: 'Concluidas' },
 ];
 
-export function KanbanBoard({ tasks }: { tasks: Task_JOIN_TaskList[] }) {
+interface IProps {
+    tasks: Task_JOIN_TaskList[];
+}
+
+export function KanbanBoard({ tasks }: IProps) {
     const [items, setItems] = useState(tasks);
     const [activeTask, setActiveTask] = useState<Task_JOIN_TaskList | null>(
         null,
