@@ -117,7 +117,7 @@ export class UserController {
 
     public async refreshToken(req: Request, res: Response) {
         const refreshToken = req.cookies.refresh_token as string;
-        console.log(refreshToken);
+
         if (!refreshToken)
             throw new UnauthorizedError('O refresh token não foi fornecido.');
 

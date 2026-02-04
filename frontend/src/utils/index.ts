@@ -7,3 +7,4 @@ export * from './is-client-side';
 export * from './set-response-cookies';
 export * from './priority-and-status';
 export * from './get-current-day-month-year';
+export * from './is-token-expired';

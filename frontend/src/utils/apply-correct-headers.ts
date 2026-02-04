@@ -20,11 +20,17 @@ export async function applyCorrectHeaders(config: RequestInit | undefined) {
 
     if (!isClientSide() && !config?.token) {
         const token = await getServerToken();
-        if (token)
-            headers = {
-                ...headers,
-                Cookie: serialize('access_token', token),
-            };
+        if (token) {
+            // Check if there are existing cookies and append
+            const existingCookies = headers.Cookie || '';
+            const separator = existingCookies ? '; ' : '';
+            if (!existingCookies.includes('access_token')) {
+                headers = {
+                    ...headers,
+                    Cookie: `${existingCookies}${separator}${serialize('access_token', token)}`,
+                };
+            }
+        }
         return headers;
     }
 

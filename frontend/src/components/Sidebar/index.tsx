@@ -28,13 +28,11 @@ import { useRouter } from 'next/navigation';
 import { Button } from '../ui';
 import { useAuth } from '@/context/auth';
 import { ThemeToggle } from '../ThemeToggle';
-import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 
 export function AppSidebar() {
     const { state } = useSidebar();
     const { signOut } = useAuth();
-    const { theme } = useTheme();
     const router = useRouter();
 
     const onLogout = async () => {
@@ -59,8 +57,11 @@ export function AppSidebar() {
                     state === 'collapsed' && 'justify-center',
                 )}
             >
-                {state === 'expanded' && theme === 'light' ? (
-                    <LogoLightTheme className="rounded-lg h-12 w-auto" />
+                {state === 'expanded' ? (
+                    <>
+                        <LogoLightTheme className="rounded-lg h-12 w-auto dark:hidden" />
+                        <LogoDarkTheme className="rounded-lg h-12 w-auto hidden dark:block" />
+                    </>
                 ) : (
                     <LogoDarkTheme className="rounded-lg h-12 w-auto" />
                 )}

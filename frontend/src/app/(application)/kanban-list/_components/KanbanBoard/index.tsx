@@ -66,16 +66,20 @@ export function KanbanBoard({ tasks }: IProps) {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
         >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full max-h-[calc(100vh-180px)]">
-                {COLUMNS.map(column => (
-                    <KanbanColumn
-                        key={column.id}
-                        id={column.id}
-                        title={column.title}
-                        tasks={items.filter(task => task.status === column.id)}
-                        activeTask={activeTask}
-                    />
-                ))}
+            <div className="overflow-x-auto overflow-y-hidden h-[calc(100vh-180px)]">
+                <div className="grid grid-cols-3 gap-6 min-w-[900px] h-full">
+                    {COLUMNS.map(column => (
+                        <KanbanColumn
+                            key={column.id}
+                            id={column.id}
+                            title={column.title}
+                            tasks={items.filter(
+                                task => task.status === column.id,
+                            )}
+                            activeTask={activeTask}
+                        />
+                    ))}
+                </div>
             </div>
 
             <DragOverlay>

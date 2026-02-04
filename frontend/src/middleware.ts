@@ -1,28 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetcher } from './services';
 import { serialize } from 'cookie';
-import { extractAndParseCookies, setResponseCookies } from './utils';
+import {
+    extractAndParseCookies,
+    setResponseCookies,
+    isTokenExpired,
+} from './utils';
 
 export async function middleware(request: NextRequest) {
     const response = NextResponse.next();
 
     const token = request.cookies.get('access_token')?.value;
     const refreshToken = request.cookies.get('refresh_token')?.value;
-    // console.log(token);
-    // console.log(refreshToken);
 
     if (
-        (!token || token === 'undefined') &&
-        (!refreshToken || refreshToken === 'undefined')
+        (!token || isTokenExpired(token)) &&
+        (!refreshToken || isTokenExpired(refreshToken)) &&
+        request.nextUrl.pathname !== '/login'
     ) {
         request.nextUrl.pathname = '/login';
         return NextResponse.redirect(request.nextUrl);
     }
 
     if (
-        (!token || token === 'undefined') &&
+        token &&
+        !isTokenExpired(token) &&
+        request.nextUrl.pathname === '/login'
+    ) {
+        return NextResponse.redirect(new URL('/simple-list', request.url));
+    }
+
+    if (
+        (!token || isTokenExpired(token)) &&
         refreshToken &&
-        refreshToken !== 'undefined'
+        !isTokenExpired(refreshToken)
     ) {
         const { data: newToken } = await fetcher<string>(
             '/users/refresh-token',
@@ -45,7 +56,18 @@ export async function middleware(request: NextRequest) {
         );
         setResponseCookies(response, cookies);
 
-        return response;
+        const requestHeaders = new Headers(request.headers);
+        requestHeaders.set(
+            'Cookie',
+            `access_token=${newToken}; refresh_token=${refreshToken}`,
+        );
+
+        return NextResponse.next({
+            request: {
+                headers: requestHeaders,
+            },
+            headers: response.headers,
+        });
     }
 
     return response;
@@ -56,5 +78,6 @@ export const config = {
         '/simple-list/:path*',
         '/my-profile/:path*',
         '/kanban-list/:path*',
+        '/login',
     ],
 };

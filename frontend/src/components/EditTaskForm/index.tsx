@@ -53,7 +53,7 @@ export function EditTaskForm({ task, userId }: Props) {
             userId: userId,
             taskListId: task.id,
             createdAt: new Date(),
-            updateAt: new Date(),
+            updatedAt: new Date(),
         };
 
         const action = await UpdateTask(finalData);
