@@ -11,7 +11,11 @@ const options: swaggerJSDoc.Options = {
         },
         servers: [
             {
-                url: 'http://localhost:8080',
+                url:
+                    process.env.ENVIRONMENT === 'production'
+                        ? process.env.RENDER_EXTERNAL_URL ||
+                          'https://seu-app.onrender.com'
+                        : 'http://localhost:8080',
             },
         ],
         components: {

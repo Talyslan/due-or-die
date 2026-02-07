@@ -3,9 +3,13 @@
     "version": "1.0.0",
     "license": "MIT",
     "author": "Talyslan",
-    "main": "index.js",
+    "engines": {
+        "node": "20"
+    },
+    "main": "dist/server.js",
     "scripts": {
         "build": "npx tsc",
+        "start": "node dist/server.js",
         "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --transpile-only src/server.ts"
     },
     "dependencies": {
