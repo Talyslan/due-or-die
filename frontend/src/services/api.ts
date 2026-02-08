@@ -1,17 +1,17 @@
 import { redirect, RedirectType } from 'next/navigation';
-import { env } from '@/env';
 import { applyCorrectHeaders, isClientSide } from '@/utils';
 import { customRedirectUser } from '@/utils/custom-redirect';
+import { getBaseUrl } from '@/utils/get-base-url';
 
 export async function fetcher<T>(
     url: string,
     config: RequestInit = {},
 ): Promise<FetchResult<T>> {
-    const fullURL = `${env.NEXT_PUBLIC_API_URL}${url}`;
     const headers = await applyCorrectHeaders(config);
+    const baseUrl = getBaseUrl();
 
     try {
-        let response = await fetch(fullURL, {
+        let response = await fetch(`${baseUrl}/api${url}`, {
             ...config,
             headers,
             credentials: 'include',
@@ -21,14 +21,14 @@ export async function fetcher<T>(
         // console.log(response.status);
 
         if (isClientSide() && response.status === 401) {
-            await fetch(`${env.NEXT_PUBLIC_API_URL}/users/refresh-token`, {
+            await fetch(`${baseUrl}/api/users/refresh-token`, {
                 ...config,
                 method: 'POST',
                 credentials: 'include',
                 headers,
             });
 
-            response = await fetch(fullURL, {
+            response = await fetch(`${baseUrl}/api${url}`, {
                 ...config,
                 headers,
                 credentials: 'include',

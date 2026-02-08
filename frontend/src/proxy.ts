@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetcher } from './services';
 import { serialize } from 'cookie';
 import {
     extractAndParseCookies,
@@ -7,8 +6,9 @@ import {
     isTokenExpired,
 } from './utils';
 
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
     const response = NextResponse.next();
+    const origin = request.nextUrl.origin;
 
     const token = request.cookies.get('access_token')?.value;
     const refreshToken = request.cookies.get('refresh_token')?.value;
@@ -35,8 +35,8 @@ export async function middleware(request: NextRequest) {
         refreshToken &&
         !isTokenExpired(refreshToken)
     ) {
-        const { data: newToken } = await fetcher<string>(
-            '/users/refresh-token',
+        const newTokenResponse= await fetch(
+            `${origin}/api/users/refresh-token`,
             {
                 method: 'POST',
                 headers: {
@@ -45,10 +45,12 @@ export async function middleware(request: NextRequest) {
             },
         );
 
-        if (!newToken) {
+        if (!newTokenResponse.ok) {
             request.nextUrl.pathname = '/login';
             return NextResponse.redirect(request.nextUrl);
         }
+
+        const { data: newToken } = await newTokenResponse.json();
 
         const cookies = extractAndParseCookies(
             `access_token=${newToken}; Path=/; HttpOnly`,
