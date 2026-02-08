@@ -15,6 +15,7 @@ export function applyTokenCookies(
         secure: !isLocal,
         path: '/',
         maxAge: 10 * 24 * 60 * 60 * 1000,
+        sameSite: isLocal ? 'lax' : 'none',
     });
 
     res.cookie('access_token', accessToken, {
@@ -22,5 +23,6 @@ export function applyTokenCookies(
         secure: !isLocal,
         path: '/',
         maxAge: 60 * 15 * 1000,
+        sameSite: isLocal ? 'lax' : 'none',
     });
 }
