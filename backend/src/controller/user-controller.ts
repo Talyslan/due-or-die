@@ -9,6 +9,7 @@ import {
     BadRequest,
     UnauthorizedError,
     NotFoundError,
+    cookieOptions,
 } from '../helpers';
 import { env } from '../env';
 
@@ -146,10 +147,7 @@ export class UserController {
         const isLocal = env.ENVIRONMENT === 'local';
 
         res.cookie('access_token', newToken, {
-            httpOnly: true,
-            secure: !isLocal,
-            sameSite: isLocal ? 'lax' : 'none',
-            path: '/',
+            ...cookieOptions,
             maxAge: 60 * 5 * 1000,
         });
 
