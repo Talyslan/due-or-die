@@ -164,7 +164,10 @@ export class UserController {
     }
 
     async update(req: Request, res: Response) {
-        const { userId } = req.params;
+        const userIdParam = req.params.userId;
+        const userId = Array.isArray(userIdParam)
+            ? userIdParam[0]
+            : userIdParam;
         const { name, email } = req.body || {};
 
         if (!userId)
@@ -182,7 +185,10 @@ export class UserController {
     }
 
     async remove(req: Request, res: Response) {
-        const { userId } = req.params;
+        const userIdParam = req.params.userId;
+        const userId = Array.isArray(userIdParam)
+            ? userIdParam[0]
+            : userIdParam;
 
         if (!userId)
             throw new BadRequest('Identificador do usuário não fornecido.');
