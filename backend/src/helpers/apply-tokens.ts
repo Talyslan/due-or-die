@@ -8,7 +8,6 @@ export const cookieOptions: CookieOptions = {
     secure: !isLocal,
     sameSite: isLocal ? 'lax' : 'none',
     path: '/',
-    domain: isLocal ? undefined : '.onrender.com',
 };
 
 export function applyTokenCookies(

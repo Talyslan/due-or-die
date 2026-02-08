@@ -144,8 +144,6 @@ export class UserController {
 
         const newToken = createToken(userId);
 
-        const isLocal = env.ENVIRONMENT === 'local';
-
         res.cookie('access_token', newToken, {
             ...cookieOptions,
             maxAge: 60 * 5 * 1000,
