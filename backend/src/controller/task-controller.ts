@@ -11,7 +11,10 @@ export class TaskController {
     }
 
     async findById(req: Request, res: Response) {
-        const { taskId } = req.params;
+        const taskIdParam = req.params.taskId;
+        const taskId = Array.isArray(taskIdParam)
+            ? taskIdParam[0]
+            : taskIdParam;
 
         if (!taskId)
             throw new Error(
@@ -51,7 +54,10 @@ export class TaskController {
     }
 
     async update(req: Request, res: Response) {
-        const { taskId } = req.params;
+        const taskIdParam = req.params.taskId;
+        const taskId = Array.isArray(taskIdParam)
+            ? taskIdParam[0]
+            : taskIdParam;
         const requiredFields = [
             'title',
             'description',
@@ -84,7 +90,10 @@ export class TaskController {
     }
 
     async remove(req: Request, res: Response) {
-        const { taskId } = req.params;
+        const taskIdParam = req.params.taskId;
+        const taskId = Array.isArray(taskIdParam)
+            ? taskIdParam[0]
+            : taskIdParam;
 
         if (!taskId)
             throw new Error(

@@ -11,7 +11,10 @@ export class TaskListController {
     }
 
     async findById(req: Request, res: Response) {
-        const { taskListId } = req.params;
+        const taskListIdParam = req.params.taskListId;
+        const taskListId = Array.isArray(taskListIdParam)
+            ? taskListIdParam[0]
+            : taskListIdParam;
 
         if (!taskListId)
             throw new Error(
@@ -44,7 +47,10 @@ export class TaskListController {
     }
 
     async update(req: Request, res: Response) {
-        const { taskListId } = req.params;
+        const taskListIdParam = req.params.taskListId;
+        const taskListId = Array.isArray(taskListIdParam)
+            ? taskListIdParam[0]
+            : taskListIdParam;
 
         if (!taskListId)
             throw new Error(
@@ -71,7 +77,10 @@ export class TaskListController {
     }
 
     async remove(req: Request, res: Response) {
-        const { taskListId } = req.params;
+        const taskListIdParam = req.params.taskListId;
+        const taskListId = Array.isArray(taskListIdParam)
+            ? taskListIdParam[0]
+            : taskListIdParam;
 
         if (!taskListId)
             throw new Error(

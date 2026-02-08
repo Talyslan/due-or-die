@@ -16,7 +16,13 @@ export class UserController {
     constructor(private readonly repository: IUserRepository) {}
 
     async findAll(req: Request, res: Response) {
-        const { email } = req.query;
+        const emailParam = req.query.email;
+        const email =
+            typeof emailParam === 'string'
+                ? emailParam
+                : Array.isArray(emailParam)
+                  ? emailParam[0]
+                  : undefined;
 
         if (email) {
             const user = await this.repository.findByEmail({ email });
@@ -29,7 +35,10 @@ export class UserController {
     }
 
     async findById(req: Request, res: Response) {
-        const { userId } = req.params;
+        const userIdParam = req.params.userId;
+        const userId = Array.isArray(userIdParam)
+            ? userIdParam[0]
+            : userIdParam;
 
         if (!userId)
             throw new BadRequest(
@@ -42,7 +51,10 @@ export class UserController {
     }
 
     async findTasksByOwner(req: Request, res: Response) {
-        const { userId } = req.params;
+        const userIdParam = req.params.userId;
+        const userId = Array.isArray(userIdParam)
+            ? userIdParam[0]
+            : userIdParam;
 
         if (!userId)
             throw new BadRequest(
@@ -55,7 +67,10 @@ export class UserController {
     }
 
     async findTasksListsByOwner(req: Request, res: Response) {
-        const { userId } = req.params;
+        const userIdParam = req.params.userId;
+        const userId = Array.isArray(userIdParam)
+            ? userIdParam[0]
+            : userIdParam;
 
         if (!userId)
             throw new BadRequest('Identificador do usuário não fornecido.');
@@ -94,7 +109,7 @@ export class UserController {
     async login(req: Request, res: Response) {
         const { uid, email } = req.body;
 
-        if (!uid && !email) {
+        if (!uid || !email) {
             throw new BadRequest('Dados insuficientes para login.');
         }
 
