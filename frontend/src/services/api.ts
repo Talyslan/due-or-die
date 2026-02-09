@@ -10,6 +10,12 @@ export async function fetcher<T>(
     const headers = await applyCorrectHeaders(config);
     const baseUrl = getBaseUrl();
 
+    console.log('[FETCHER] start', {
+        url,
+        isClient: isClientSide(),
+        method: config.method ?? 'GET',
+    });
+
     try {
         const response = await fetch(`${baseUrl}/api${url}`, {
             ...config,
@@ -17,21 +23,26 @@ export async function fetcher<T>(
             credentials: 'include',
         });
 
+        console.log('[FETCHER] response', {
+            url,
+            status: response.status,
+            redirected: response.redirected,
+        });
+
         const contentType = response.headers.get('content-type') ?? '';
 
         if (!contentType.includes('application/json')) {
             const text = await response.text();
 
-            console.error('API retornou resposta não-JSON', {
+            console.error('[FETCHER] non-json', {
                 url,
                 status: response.status,
-                redirected: response.redirected,
-                contentType,
                 text: text.slice(0, 200),
             });
 
             // SSR: redireciona
             if (!isClientSide()) {
+                console.error('[FETCHER] redirect SSR -> /login');
                 redirect('/login');
             }
 
@@ -78,6 +89,11 @@ export async function fetcher<T>(
         }
 
         const json = await response.json();
+
+        console.log('[FETCHER] json ok', {
+            url,
+            hasData: !!json?.data,
+        });
 
         if (!response.ok) {
             throw new Error(json?.message ?? 'Erro desconhecido');

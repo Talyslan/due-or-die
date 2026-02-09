@@ -3,6 +3,7 @@ import { TaskSheet } from './_components/TaskSheet';
 import { fetcher } from '@/services';
 import { AddTaskFormData } from './_components/AddForm';
 import { AddTaskFormLoading } from './_components/AddForm/skeleton';
+import { redirect } from 'next/navigation';
 
 interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,10 +18,12 @@ export default async function SimpleListPage({ searchParams }: Props) {
 
     const { data: user } = await fetcher<User>(`/users/me`);
 
+    if (!user) redirect('/login');
+
     return (
         <TaskSheet isOpen={open}>
             <Suspense fallback={<AddTaskFormLoading />}>
-                <AddTaskFormData userId={user!.uid} />
+                <AddTaskFormData userId={user.uid} />
             </Suspense>
         </TaskSheet>
     );
