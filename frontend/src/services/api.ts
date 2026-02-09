@@ -11,42 +11,73 @@ export async function fetcher<T>(
     const baseUrl = getBaseUrl();
 
     try {
-        let response = await fetch(`${baseUrl}/api${url}`, {
+        const response = await fetch(`${baseUrl}/api${url}`, {
             ...config,
             headers,
             credentials: 'include',
         });
 
-        // console.log(isClientSide());
-        // console.log(response.status);
+        const contentType = response.headers.get('content-type') ?? '';
+
+        if (!contentType.includes('application/json')) {
+            const text = await response.text();
+
+            console.error('API retornou resposta não-JSON', {
+                url,
+                status: response.status,
+                redirected: response.redirected,
+                contentType,
+                text: text.slice(0, 200),
+            });
+
+            // SSR: redireciona
+            if (!isClientSide()) {
+                redirect('/login');
+            }
+
+            throw new Error('Resposta inválida da API');
+        }
 
         if (isClientSide() && response.status === 401) {
-            await fetch(`${baseUrl}/api/users/refresh-token`, {
+            const refresh = await fetch(`${baseUrl}/api/users/refresh-token`, {
                 ...config,
                 method: 'POST',
                 credentials: 'include',
                 headers,
             });
 
-            response = await fetch(`${baseUrl}/api${url}`, {
+            if (!refresh.ok) {
+                customRedirectUser('/', 'replace' as RedirectType);
+                return { data: null, message: null };
+            }
+
+            const retry = await fetch(`${baseUrl}/api${url}`, {
                 ...config,
                 headers,
                 credentials: 'include',
             });
 
-            if (response.status === 401) {
-                console.log('!401 token && refresh token client side');
+            if (!retry.ok) {
                 customRedirectUser('/', 'replace' as RedirectType);
+                return { data: null, message: null };
             }
 
-            const text = await response.text();
-            const json = text ? JSON.parse(text) : {};
+            const retryJson = await retry.json();
 
-            return { data: json.data ?? null, message: json.message ?? null };
+            // if (response.status === 401) {
+            //     console.log('!401 token && refresh token client side');
+            //     customRedirectUser('/', 'replace' as RedirectType);
+            // }
+
+            // const text = await response.json();
+            // const json = text ? JSON.parse(text) : {};
+            return {
+                data: retryJson.data ?? null,
+                message: retryJson.message ?? null,
+            };
         }
 
-        const text = await response.text();
-        const json = text ? JSON.parse(text) : {};
+        const json = await response.json();
 
         if (!response.ok) {
             throw new Error(json?.message ?? 'Erro desconhecido');
@@ -61,7 +92,11 @@ export async function fetcher<T>(
             error.message.includes('Token expirado') ||
             error.message.includes('Não autorizado')
         ) {
-            redirect('/login', 'replace' as RedirectType);
+            if (!isClientSide()) {
+                redirect('/login');
+            } else {
+                customRedirectUser('/login', 'replace' as RedirectType);
+            }
         }
 
         throw error;
